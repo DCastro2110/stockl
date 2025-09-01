@@ -1,10 +1,9 @@
 'use client';
 
 import clsx from 'clsx';
-import { LucideIcon, LucideProps } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React, { ReactElement, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
 import { Button } from './ui/button';
 
