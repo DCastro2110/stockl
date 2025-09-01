@@ -1,4 +1,7 @@
+import { BoxIcon, LayoutGridIcon, ShoppingBasketIcon } from 'lucide-react';
 import React from 'react';
+
+import { SidebarButton } from './sidebar-button';
 
 const Sidebar = () => {
   return (
@@ -7,9 +10,18 @@ const Sidebar = () => {
         <h1 className='text-2xl font-black text-green-500'>STOCKLY</h1>
       </div>
       <nav className='flex flex-col gap-2 px-2 py-4'>
-        <button className='text-left'>Dashboard</button>
-        <button className='text-left'>Dashboard</button>
-        <button className='text-left'>Dashboard</button>
+        <SidebarButton href='/'>
+          <LayoutGridIcon size={20} />
+          Dashboard
+        </SidebarButton>
+        <SidebarButton href='/products'>
+          <BoxIcon size={20} />
+          Produtos
+        </SidebarButton>
+        <SidebarButton href='/sales'>
+          <ShoppingBasketIcon size={20} />
+          Vendas
+        </SidebarButton>
       </nav>
     </aside>
   );
