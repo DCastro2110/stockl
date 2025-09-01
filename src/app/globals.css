@@ -1,0 +1,10 @@
+@import 'tailwindcss';
+
+body,
+html {
+  @apply h-full;
+}
+
+body {
+  @apply bg-gray-100;
+}
