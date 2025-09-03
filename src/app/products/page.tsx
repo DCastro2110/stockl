@@ -1,17 +1,13 @@
 import React from 'react';
 
 import { Header } from '@/app/_components/common/header';
-import { prisma } from '@/lib/prisma-client';
 
+import { getProducts } from '../_data-access/products/get-products';
 import { columns } from './_components/columns';
 import { DataTable } from './_components/data-table';
 
-const Home = async () => {
-  const data = await prisma.product.findMany();
-  const productWithPriceAsNumber = data.map((item) => ({
-    ...item,
-    price: Number(item.price),
-  }));
+const ProductsPage = async () => {
+  const product = await getProducts();
 
   return (
     <div className='px-8 py-8'>
@@ -21,9 +17,9 @@ const Home = async () => {
       />
       <DataTable
         columns={columns}
-        data={productWithPriceAsNumber}
+        data={product}
       ></DataTable>
     </div>
   );
 };
-export default Home;
+export default ProductsPage;
