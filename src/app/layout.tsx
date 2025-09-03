@@ -24,7 +24,7 @@ export default function RootLayout({
       <body className={`${inter.className} antialiased`}>
         <div className='flex h-full gap-8'>
           <Sidebar />
-          <main className='ml-[272px]'>{children}</main>
+          <main className='ml-[272px] w-full'>{children}</main>
         </div>
       </body>
     </html>
