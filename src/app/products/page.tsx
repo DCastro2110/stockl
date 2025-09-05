@@ -1,8 +1,9 @@
 import React from 'react';
 
+import { Toaster } from '../_components/ui/sonner';
 import { getProducts } from '../_data-access/products/get-products';
-import { AddProductDialog } from './_components/add-product-dialog';
 import { columns } from './_components/columns';
+import { CreateProductDialog } from './_components/create-product-dialog';
 import { DataTable } from './_components/data-table';
 
 const ProductsPage = async () => {
@@ -14,13 +15,14 @@ const ProductsPage = async () => {
         <h2 className='text-sm font-semibold text-green-500'>Produtos</h2>
         <div className='flex w-full items-center justify-between'>
           <h1 className='text-xl font-semibold'>Gestão de Produtos</h1>
-          <AddProductDialog />
+          <CreateProductDialog />
         </div>
       </header>
       <DataTable
         columns={columns}
         data={product}
       ></DataTable>
+      <Toaster />
     </div>
   );
 };

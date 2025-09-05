@@ -1,9 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2Icon } from 'lucide-react';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { NumericFormat } from 'react-number-format';
-import z from 'zod';
 
+import {
+  createProductSchema,
+  TCreateProductSchema,
+} from '@/app/_actions/product/create-product/schema';
 import { Button } from '@/app/_components/ui/button';
 import { DialogClose, DialogFooter } from '@/app/_components/ui/dialog';
 import {
@@ -17,27 +21,13 @@ import {
 } from '@/app/_components/ui/form';
 import { Input } from '@/app/_components/ui/input';
 
-const formSchema = z.object({
-  name: z.string().trim().min(1, {
-    error: 'O nome do produto não pode ser vazio.',
-  }),
-  price: z.number('O preço deve ser um número').min(0.01, {
-    error: 'O preço não pode ser 0',
-  }),
-  stock: z
-    .number('O estoque deve ser um número')
-    .int()
-    .positive('O estoque não pode ser negativo')
-    .min(0, {
-      error: 'O estoque não pode ser negativo',
-    }),
-});
+interface ICreateProductFormProps {
+  onSubmit: (data: TCreateProductSchema) => void;
+}
 
-type TFormSchema = z.infer<typeof formSchema>;
-
-export const CreateProductForm = () => {
+export const CreateProductForm = ({ onSubmit }: ICreateProductFormProps) => {
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(createProductSchema),
     defaultValues: {
       name: '',
       price: 1,
@@ -45,10 +35,6 @@ export const CreateProductForm = () => {
     },
     shouldUnregister: true,
   });
-
-  const onSubmit = (data: TFormSchema) => {
-    console.log(data);
-  };
 
   return (
     <Form {...form}>
@@ -128,9 +114,11 @@ export const CreateProductForm = () => {
         />
         <DialogFooter className='flex w-full justify-between!'>
           <Button
-            className='flex-1 bg-green-500'
+            className='flex-1 gap-2 bg-green-500'
             type='submit'
+            disabled={form.formState.isSubmitting}
           >
+            {form.formState.isSubmitting && <Loader2Icon size={16} />}
             Cadastrar
           </Button>
           <DialogClose
