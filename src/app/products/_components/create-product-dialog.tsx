@@ -11,9 +11,9 @@ import {
   DialogTrigger,
 } from '@/app/_components/ui/dialog';
 
-import { AddProductForm } from './add-product-form';
+import { CreateProductForm } from './create-product-form';
 
-export const AddProductDialog = () => {
+export const CreateProductDialog = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -27,7 +27,7 @@ export const AddProductDialog = () => {
           <h3 className='text-2xl font-semibold'>Cadastrar produto</h3>
           <span className='text-sm'>Insira as informações abaixo</span>
         </DialogHeader>
-        <AddProductForm />
+        <CreateProductForm />
       </DialogContent>
     </Dialog>
   );

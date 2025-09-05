@@ -35,7 +35,7 @@ const formSchema = z.object({
 
 type TFormSchema = z.infer<typeof formSchema>;
 
-export const AddProductForm = () => {
+export const CreateProductForm = () => {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
