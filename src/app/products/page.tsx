@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { Toaster } from '../_components/ui/sonner';
 import { getProducts } from '../_data-access/products/get-products';
 import { columns } from './_components/columns';
 import { CreateProductDialog } from './_components/create-product-dialog';
@@ -22,7 +21,6 @@ const ProductsPage = async () => {
         columns={columns}
         data={product}
       ></DataTable>
-      <Toaster />
     </div>
   );
 };

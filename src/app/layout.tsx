@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
 import Sidebar from './_components/sidebar';
+import { Toaster } from './_components/ui/sonner';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -25,6 +26,7 @@ export default function RootLayout({
         <div className='flex h-full gap-8'>
           <Sidebar />
           <main className='ml-[272px] w-full'>{children}</main>
+          <Toaster />
         </div>
       </body>
     </html>
