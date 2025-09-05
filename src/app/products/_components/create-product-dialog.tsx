@@ -25,6 +25,7 @@ export const CreateProductDialog = () => {
       setIsDialogOpen(false);
       toast('Produto criado com sucesso.');
     } catch (err) {
+      console.log(err);
       toast('Erro ao criar o produto.');
     }
   };
