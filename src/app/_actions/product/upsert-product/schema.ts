@@ -1,6 +1,7 @@
 import z from 'zod';
 
-export const createProductSchema = z.object({
+export const upsertProductSchema = z.object({
+  id: z.uuid().optional(),
   name: z.string().trim().min(1, {
     error: 'O nome do produto não pode ser vazio.',
   }),
@@ -16,4 +17,4 @@ export const createProductSchema = z.object({
     }),
 });
 
-export type TCreateProductSchema = z.infer<typeof createProductSchema>;
+export type TUpsertProductSchema = z.infer<typeof upsertProductSchema>;

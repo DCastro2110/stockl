@@ -5,9 +5,9 @@ import { useForm } from 'react-hook-form';
 import { NumericFormat } from 'react-number-format';
 
 import {
-  createProductSchema,
-  TCreateProductSchema,
-} from '@/app/_actions/product/create-product/schema';
+  TUpsertProductSchema,
+  upsertProductSchema,
+} from '@/app/_actions/product/upsert-product/schema';
 import { Button } from '@/app/_components/ui/button';
 import { DialogClose, DialogFooter } from '@/app/_components/ui/dialog';
 import {
@@ -21,18 +21,34 @@ import {
 } from '@/app/_components/ui/form';
 import { Input } from '@/app/_components/ui/input';
 
-interface ICreateProductFormProps {
-  onSubmit: (data: TCreateProductSchema) => void;
+import { Product } from '../../../../generated/prisma';
+
+interface IUpsertProductFormProps {
+  onSubmit: (data: TUpsertProductSchema) => void;
+  product?: Omit<Product, 'createdAt' | 'updatedAt'>;
 }
 
-export const CreateProductForm = ({ onSubmit }: ICreateProductFormProps) => {
+export const UpsertProductForm = ({
+  onSubmit,
+  product,
+}: IUpsertProductFormProps) => {
   const form = useForm({
-    resolver: zodResolver(createProductSchema),
-    defaultValues: {
-      name: '',
-      price: 1,
-      stock: 0,
-    },
+    resolver: zodResolver(upsertProductSchema),
+    defaultValues: (() => {
+      if (product?.id) {
+        return {
+          name: product.name,
+          price: Number(product.price),
+          stock: product.stock,
+        };
+      }
+
+      return {
+        name: '',
+        price: 1,
+        stock: 0,
+      };
+    })(),
     shouldUnregister: true,
   });
 
@@ -55,7 +71,7 @@ export const CreateProductForm = ({ onSubmit }: ICreateProductFormProps) => {
                 />
               </FormControl>
               <FormDescription className='hidden'>
-                Nome do produto a ser criado
+                Nome do produto
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -82,7 +98,7 @@ export const CreateProductForm = ({ onSubmit }: ICreateProductFormProps) => {
                 />
               </FormControl>
               <FormDescription className='hidden'>
-                Preço do produto a ser criado
+                Preço do produto
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -106,7 +122,7 @@ export const CreateProductForm = ({ onSubmit }: ICreateProductFormProps) => {
                 />
               </FormControl>
               <FormDescription className='hidden'>
-                Estoque do produto a ser criado
+                Estoque do produto
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -119,7 +135,7 @@ export const CreateProductForm = ({ onSubmit }: ICreateProductFormProps) => {
             disabled={form.formState.isSubmitting}
           >
             {form.formState.isSubmitting && <Loader2Icon size={16} />}
-            Cadastrar
+            Enviar
           </Button>
           <DialogClose
             className='flex-1'
