@@ -22,20 +22,21 @@ import {
   DropdownMenuTrigger,
 } from '@/app/_components/ui/dropdown-menu';
 
+import { Product } from '../../../../generated/prisma';
 import ExcludeAlertDialog from './exclude-alert-dialog';
 
 interface IOptionsDropdownProps {
-  productId: string;
+  product: Omit<Product, 'createdAt' | 'updatedAt'>;
 }
 
-const OptionsDropdown = ({ productId }: IOptionsDropdownProps) => {
+const OptionsDropdown = ({ product }: IOptionsDropdownProps) => {
   const handleCopyToClipboard = () => {
-    navigator.clipboard.writeText(productId);
+    navigator.clipboard.writeText(product.id);
   };
 
   const handleExcludeProduct = async () => {
     try {
-      const product = await excludeProduct({ id: productId });
+      const data = await excludeProduct({ id: product.id });
       toast.success('Produto excluído com sucesso');
     } catch (err) {
       toast.error('Erro ao excluir o produto.');

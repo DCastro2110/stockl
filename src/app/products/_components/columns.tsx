@@ -62,7 +62,17 @@ export const columns: ColumnDef<TProduct>[] = [
     header: 'Opções',
     cell: ({ row }) => {
       const product = row.original as Product;
-      return <OptionsDropdown productId={product.id} />;
+      return (
+        <OptionsDropdown
+          product={{
+            name: product.name,
+            status: product.status,
+            price: product.price,
+            stock: product.stock,
+            id: product.id,
+          }}
+        />
+      );
     },
   },
 ];
