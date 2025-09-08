@@ -16,18 +16,19 @@ export async function upsertProduct(data: TUpsertProductSchema) {
     price: data.price,
     status: status,
   };
-
-  await prisma.product.upsert({
-    where: {
-      id: data.id,
-    },
-    create: {
-      ...productWithoutId,
-    },
-    update: {
-      ...productWithoutId,
-    },
-  });
+  try {
+    await prisma.product.upsert({
+      where: {
+        id: data.id || '',
+      },
+      create: {
+        ...productWithoutId,
+      },
+      update: {
+        ...productWithoutId,
+      },
+    });
+  } catch (err) {}
 
   revalidatePath('/products');
 }

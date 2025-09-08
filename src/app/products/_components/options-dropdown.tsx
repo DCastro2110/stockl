@@ -4,15 +4,18 @@ import {
   SquarePenIcon,
   Trash2Icon,
 } from 'lucide-react';
-import React from 'react';
+import React, { useState } from 'react';
 import { toast } from 'sonner';
 
 import { excludeProduct } from '@/app/_actions/product/exclude-product';
+import { upsertProduct } from '@/app/_actions/product/upsert-product';
+import { TUpsertProductSchema } from '@/app/_actions/product/upsert-product/schema';
 import {
   AlertDialog,
   AlertDialogTrigger,
 } from '@/app/_components/ui/alert-dialog';
 import { Button } from '@/app/_components/ui/button';
+import { Dialog, DialogTrigger } from '@/app/_components/ui/dialog';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,6 +26,7 @@ import {
 } from '@/app/_components/ui/dropdown-menu';
 
 import { Product } from '../../../../generated/prisma';
+import { EditProductDialog } from './edit-product-dialog';
 import ExcludeAlertDialog from './exclude-alert-dialog';
 
 interface IOptionsDropdownProps {
@@ -30,6 +34,7 @@ interface IOptionsDropdownProps {
 }
 
 const OptionsDropdown = ({ product }: IOptionsDropdownProps) => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const handleCopyToClipboard = () => {
     navigator.clipboard.writeText(product.id);
   };
@@ -43,41 +48,70 @@ const OptionsDropdown = ({ product }: IOptionsDropdownProps) => {
     }
   };
 
-  return (
-    <AlertDialog>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant='ghost'>
-            <EllipsisIcon />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuLabel>Opções</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem
-            className='flex flex-row items-center gap-2'
-            onClick={handleCopyToClipboard}
-          >
-            <ClipboardIcon /> Copiar ID
-          </DropdownMenuItem>
-          <DropdownMenuItem className='flex flex-row items-center gap-2'>
-            <SquarePenIcon />
-            Editar
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            asChild
-            className='flex flex-row items-center gap-2'
-          >
-            <AlertDialogTrigger>
-              <Trash2Icon />
-              Excluir
-            </AlertDialogTrigger>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+  const handleEditProduct = async (data: TUpsertProductSchema) => {
+    try {
+      await upsertProduct({
+        ...data,
+        id: product.id,
+      });
+      setIsDialogOpen(false);
+      toast('Produto editado com sucesso.');
+    } catch (err) {
+      console.log(err);
+      toast('Erro ao editar o produto.');
+    }
+  };
 
-      <ExcludeAlertDialog handleExcludeProduct={handleExcludeProduct} />
-    </AlertDialog>
+  return (
+    <Dialog
+      open={isDialogOpen}
+      onOpenChange={setIsDialogOpen}
+    >
+      <AlertDialog>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant='ghost'>
+              <EllipsisIcon />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuLabel>Opções</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              className='flex flex-row items-center gap-2'
+              onClick={handleCopyToClipboard}
+            >
+              <ClipboardIcon /> Copiar ID
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              asChild
+              className='flex flex-row items-center gap-2'
+            >
+              <DialogTrigger>
+                <SquarePenIcon />
+                Editar
+              </DialogTrigger>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              asChild
+              className='flex flex-row items-center gap-2'
+            >
+              <AlertDialogTrigger>
+                <Trash2Icon />
+                Excluir
+              </AlertDialogTrigger>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        <ExcludeAlertDialog handleExcludeProduct={handleExcludeProduct} />
+      </AlertDialog>
+
+      <EditProductDialog
+        product={product}
+        handleEditProduct={handleEditProduct}
+      />
+    </Dialog>
   );
 };
 export default OptionsDropdown;

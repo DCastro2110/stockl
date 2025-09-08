@@ -8,13 +8,9 @@ export const upsertProductSchema = z.object({
   price: z.number('O preço deve ser um número').min(0.01, {
     error: 'O preço não pode ser 0',
   }),
-  stock: z
-    .number('O estoque deve ser um número')
-    .int()
-    .positive('O estoque não pode ser negativo')
-    .min(0, {
-      error: 'O estoque não pode ser negativo',
-    }),
+  stock: z.int().positive('O estoque não pode ser negativo').min(0, {
+    error: 'O estoque não pode ser negativo',
+  }),
 });
 
 export type TUpsertProductSchema = z.infer<typeof upsertProductSchema>;
