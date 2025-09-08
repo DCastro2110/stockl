@@ -37,6 +37,13 @@ export const columns: ColumnDef<TProduct>[] = [
   {
     accessorKey: 'price',
     header: 'Valor unitário',
+    cell: ({ row }) => {
+      const { price } = row.original;
+      return Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      }).format(Number(price));
+    },
   },
   {
     accessorKey: 'status',
