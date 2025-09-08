@@ -9,11 +9,9 @@ import { Badge } from '@/app/_components/ui/badge';
 
 import OptionsDropdown from './options-dropdown';
 
-export type TProduct =
-  | {
-      price: number;
-    }
-  | Product;
+export type TProduct = Omit<Product, 'price'> & {
+  price: number;
+};
 
 function getStatus(status: string) {
   switch (status) {
@@ -49,7 +47,7 @@ export const columns: ColumnDef<TProduct>[] = [
     accessorKey: 'status',
     header: 'Status',
     cell: ({ row }) => {
-      const product = row.original as Product;
+      const product = row.original as TProduct;
       const bagdeStyle = clsx(
         'w-40 p-2',
         product.status === 'active'
@@ -68,7 +66,7 @@ export const columns: ColumnDef<TProduct>[] = [
     accessorKey: 'options',
     header: 'Opções',
     cell: ({ row }) => {
-      const product = row.original as Product;
+      const product = row.original as TProduct;
       return (
         <OptionsDropdown
           product={{

@@ -28,9 +28,10 @@ import {
 import { Product } from '../../../../generated/prisma';
 import { EditProductDialog } from './edit-product-dialog';
 import ExcludeAlertDialog from './exclude-alert-dialog';
+import { TProduct } from './columns';
 
 interface IOptionsDropdownProps {
-  product: Omit<Product, 'createdAt' | 'updatedAt'>;
+  product: Omit<TProduct, 'createdAt' | 'updatedAt'>;
 }
 
 const OptionsDropdown = ({ product }: IOptionsDropdownProps) => {

@@ -1,8 +1,9 @@
 import { prisma } from '@/lib/prisma-client';
 
 import { Product } from '../../../../generated/prisma';
+import { TProduct } from '@/app/products/_components/columns';
 
-export async function getProducts(): Promise<Product[]> {
+export async function getProducts(): Promise<TProduct[]> {
   const products = await prisma.product.findMany();
   const productWithPriceAsNumber = products.map((item) => ({
     ...item,

@@ -7,10 +7,11 @@ import { DialogContent, DialogHeader } from '@/app/_components/ui/dialog';
 
 import { Product } from '../../../../generated/prisma';
 import { UpsertProductForm } from './upsert-product-form';
+import { TProduct } from './columns';
 
 interface IEditProductDialogProps {
   handleEditProduct: (data: TUpsertProductSchema) => void;
-  product: Omit<Product, 'createdAt' | 'updatedAt'>;
+  product: Omit<TProduct, 'createdAt' | 'updatedAt'>;
 }
 
 export const EditProductDialog = ({
