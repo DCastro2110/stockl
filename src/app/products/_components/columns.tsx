@@ -7,6 +7,8 @@ import { CircleIcon } from 'lucide-react';
 import { Product } from '@/../generated/prisma';
 import { Badge } from '@/app/_components/ui/badge';
 
+import OptionsDropdown from './options-dropdown';
+
 export type TProduct =
   | {
       price: number;
@@ -53,6 +55,14 @@ export const columns: ColumnDef<TProduct>[] = [
           {getStatus(product.status)}
         </Badge>
       );
+    },
+  },
+  {
+    accessorKey: 'options',
+    header: 'Opções',
+    cell: ({ row }) => {
+      const product = row.original as Product;
+      return <OptionsDropdown productId={product.id} />;
     },
   },
 ];
