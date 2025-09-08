@@ -5,7 +5,9 @@ import {
   Trash2Icon,
 } from 'lucide-react';
 import React from 'react';
+import { toast } from 'sonner';
 
+import { excludeProduct } from '@/app/_actions/product/exclude-product';
 import {
   AlertDialog,
   AlertDialogTrigger,
@@ -31,7 +33,14 @@ const OptionsDropdown = ({ productId }: IOptionsDropdownProps) => {
     navigator.clipboard.writeText(productId);
   };
 
-  const handleExcludeProduct = () => {};
+  const handleExcludeProduct = async () => {
+    try {
+      const product = await excludeProduct({ id: productId });
+      toast.success('Produto excluído com sucesso');
+    } catch (err) {
+      toast.error('Erro ao excluir o produto.');
+    }
+  };
 
   return (
     <AlertDialog>
