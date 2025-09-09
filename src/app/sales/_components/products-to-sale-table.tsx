@@ -17,7 +17,7 @@ import { Button } from '@/app/_components/ui/button';
 
 interface IProductToSaleTableProps {
   addedProducts: IAddedProduct[];
-  handleDeleteProduct: (id: string) => void;
+  handleDeleteProduct: (productId: string) => void;
 }
 
 const ProductToSaleTable = ({

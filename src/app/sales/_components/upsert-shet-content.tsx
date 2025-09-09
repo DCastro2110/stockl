@@ -80,8 +80,8 @@ const UpsertSheetContent = ({
 
     const product = products.filter((item) => item.id === data.productId)[0];
 
-    setAddedProducts((current) => [
-      ...current,
+    setAddedProducts((currentProducts) => [
+      ...currentProducts,
       {
         name: product.name,
         price: product.price,
@@ -93,9 +93,9 @@ const UpsertSheetContent = ({
     form.reset();
   };
 
-  const handleDeleteProduct = (id: string) => {
+  const handleDeleteProduct = (productId: string) => {
     setAddedProducts((current) => {
-      return current.filter((item) => item.id !== id);
+      return current.filter((item) => item.id !== productId);
     });
   };
 
