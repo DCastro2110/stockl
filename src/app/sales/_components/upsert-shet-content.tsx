@@ -30,7 +30,7 @@ import { Loader2Icon, PlusCircleIcon, PlusIcon } from 'lucide-react';
 import { TProduct } from '@/app/products/_components/columns';
 import ProductToSaleTable from './products-to-sale-table';
 import { toast } from 'sonner';
-import { upsertSale } from '@/app/_actions/sale/upsert-sale';
+import { createSale } from '@/app/_actions/sale/create-sale';
 
 interface IUpsertSheetContentProps {
   title: string;
@@ -68,7 +68,7 @@ const UpsertSheetContent = ({
   const [addedProducts, setAddedProducts] = useState<IAddedProduct[]>([]);
   const [, saveSale, isPending] = useActionState(async () => {
     try {
-      await upsertSale({ products: addedProducts });
+      await createSale({ products: addedProducts });
       handleCloseSheet();
       setAddedProducts([]);
       toast.success('Venda criada com sucesso.');
