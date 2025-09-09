@@ -4,8 +4,10 @@ import React, { useState } from 'react';
 
 import { Combobox, IComboBoxOptions } from '@/app/_components/ui/combobox';
 import {
+  SheetClose,
   SheetContent,
   SheetDescription,
+  SheetFooter,
   SheetHeader,
   SheetTitle,
 } from '@/app/_components/ui/sheet';
@@ -34,6 +36,7 @@ interface IUpsertSheetContentProps {
   description: string;
   options: IComboBoxOptions[];
   products: TProduct[];
+  endButtonLabel: string;
 }
 
 const formSchema = z.object({
@@ -48,7 +51,7 @@ type TFormSchema = z.infer<typeof formSchema>;
 export interface IAddedProduct {
   name: string;
   id: string;
-  price: number;
+  unitPrice: number;
   quantity: number;
 }
 
@@ -57,6 +60,7 @@ const UpsertSheetContent = ({
   description,
   options,
   products,
+  endButtonLabel,
 }: IUpsertSheetContentProps) => {
   const [addedProducts, setAddedProducts] = useState<IAddedProduct[]>([]);
   const form = useForm({
@@ -105,7 +109,7 @@ const UpsertSheetContent = ({
       ...currentProducts,
       {
         name: product.name,
-        price: product.price,
+        unitPrice: product.price,
         id: product.id,
         quantity: data.quantity,
       },
@@ -116,6 +120,11 @@ const UpsertSheetContent = ({
     setAddedProducts((current) => {
       return current.filter((item) => item.id !== productId);
     });
+  };
+
+  const handleCloseSheet = () => {
+    form.reset();
+    setAddedProducts([]);
   };
 
   return (
@@ -184,6 +193,22 @@ const UpsertSheetContent = ({
           addedProducts={addedProducts}
         />
       </div>
+      <SheetFooter className='flex w-full flex-row gap-2'>
+        <SheetClose
+          className='flex-1'
+          asChild
+        >
+          <Button
+            onClick={handleCloseSheet}
+            variant='secondary'
+          >
+            Cancelar
+          </Button>
+        </SheetClose>
+        <Button className='flex-1 bg-green-500 hover:bg-green-600'>
+          {endButtonLabel}
+        </Button>
+      </SheetFooter>
     </SheetContent>
   );
 };

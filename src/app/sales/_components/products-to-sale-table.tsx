@@ -26,7 +26,10 @@ const ProductToSaleTable = ({
 }: IProductToSaleTableProps) => {
   const subtotal = useMemo(
     () =>
-      addedProducts.reduce((acc, item) => acc + item.quantity * item.price, 0),
+      addedProducts.reduce(
+        (acc, item) => acc + item.quantity * item.unitPrice,
+        0
+      ),
     [addedProducts]
   );
 
@@ -45,9 +48,11 @@ const ProductToSaleTable = ({
         {addedProducts.map((item) => (
           <TableRow key={item.id}>
             <TableCell className='font-medium'>{item.name}</TableCell>
-            <TableCell>{formatCurrency(item.price)}</TableCell>
+            <TableCell>{formatCurrency(item.unitPrice)}</TableCell>
             <TableCell>{item.quantity}</TableCell>
-            <TableCell>{formatCurrency(item.price * item.quantity)}</TableCell>
+            <TableCell>
+              {formatCurrency(item.unitPrice * item.quantity)}
+            </TableCell>
             <TableCell className='text-right'>
               <Button
                 variant='ghost'

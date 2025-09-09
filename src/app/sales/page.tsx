@@ -23,11 +23,13 @@ const SalesPage = async () => {
             <SheetTrigger asChild>
               <Button>Adicionar Venda</Button>
             </SheetTrigger>
+
             <UpsertSheetContent
               products={products}
               options={comboOptions}
               description='Adicionar informações sobre a venda abaixo.'
               title='Adicionar venda'
+              endButtonLabel='Finalizar'
             />
           </Sheet>
         </div>
