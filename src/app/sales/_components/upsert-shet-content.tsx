@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { startTransition, useActionState, useState } from 'react';
 
 import { Combobox, IComboBoxOptions } from '@/app/_components/ui/combobox';
 import {
@@ -26,10 +26,11 @@ import {
 import { Input } from '@/app/_components/ui/input';
 import { NumericFormat } from 'react-number-format';
 import { Button } from '@/app/_components/ui/button';
-import { PlusCircleIcon, PlusIcon } from 'lucide-react';
+import { Loader2Icon, PlusCircleIcon, PlusIcon } from 'lucide-react';
 import { TProduct } from '@/app/products/_components/columns';
 import ProductToSaleTable from './products-to-sale-table';
 import { toast } from 'sonner';
+import { upsertSale } from '@/app/_actions/sale/upsert-sale';
 
 interface IUpsertSheetContentProps {
   title: string;
@@ -37,6 +38,7 @@ interface IUpsertSheetContentProps {
   options: IComboBoxOptions[];
   products: TProduct[];
   endButtonLabel: string;
+  handleCloseSheet: () => void;
 }
 
 const formSchema = z.object({
@@ -61,14 +63,26 @@ const UpsertSheetContent = ({
   options,
   products,
   endButtonLabel,
+  handleCloseSheet,
 }: IUpsertSheetContentProps) => {
   const [addedProducts, setAddedProducts] = useState<IAddedProduct[]>([]);
+  const [, saveSale, isPending] = useActionState(async () => {
+    try {
+      await upsertSale({ products: addedProducts });
+      handleCloseSheet();
+      setAddedProducts([]);
+      toast.success('Venda criada com sucesso.');
+    } catch (err) {
+      toast.error('Erro ao criar a venda.');
+    }
+  }, null);
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       productId: '',
       quantity: 1,
     },
+    shouldUnregister: true,
   });
 
   const onSubmit = (data: TFormSchema) => {
@@ -122,9 +136,12 @@ const UpsertSheetContent = ({
     });
   };
 
-  const handleCloseSheet = () => {
-    form.reset();
+  const onCloseSheet = () => {
     setAddedProducts([]);
+  };
+
+  const handleFinalizeSale = () => {
+    startTransition(saveSale);
   };
 
   return (
@@ -199,13 +216,18 @@ const UpsertSheetContent = ({
           asChild
         >
           <Button
-            onClick={handleCloseSheet}
+            onClick={onCloseSheet}
             variant='secondary'
           >
             Cancelar
           </Button>
         </SheetClose>
-        <Button className='flex-1 bg-green-500 hover:bg-green-600'>
+        <Button
+          onClick={handleFinalizeSale}
+          className='flex flex-1 flex-row items-center gap-2 bg-green-500 hover:bg-green-600'
+          disabled={isPending || addedProducts.length === 0}
+        >
+          {isPending && <Loader2Icon className='animate:spin' />}
           {endButtonLabel}
         </Button>
       </SheetFooter>

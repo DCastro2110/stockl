@@ -5,6 +5,7 @@ import { IComboBoxOptions } from '../_components/ui/combobox';
 import { Sheet, SheetTrigger } from '../_components/ui/sheet';
 import { getProducts } from '../_data-access/products/get-products';
 import UpsertSheetContent from './_components/upsert-shet-content';
+import CreateSaleSheet from './_components/create-sale-sheet';
 
 const SalesPage = async () => {
   const products = await getProducts();
@@ -19,19 +20,10 @@ const SalesPage = async () => {
         <h2 className='text-sm font-semibold text-green-500'>Produtos</h2>
         <div className='flex w-full items-center justify-between'>
           <h1 className='text-xl font-semibold'>Gestão de Produtos</h1>
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button>Adicionar Venda</Button>
-            </SheetTrigger>
-
-            <UpsertSheetContent
-              products={products}
-              options={comboOptions}
-              description='Adicionar informações sobre a venda abaixo.'
-              title='Adicionar venda'
-              endButtonLabel='Finalizar'
-            />
-          </Sheet>
+          <CreateSaleSheet
+            products={products}
+            comboOptions={comboOptions}
+          />
         </div>
       </header>
     </div>
