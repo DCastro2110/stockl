@@ -93,6 +93,12 @@ const UpsertSheetContent = ({
     form.reset();
   };
 
+  const handleDeleteProduct = (id: string) => {
+    setAddedProducts((current) => {
+      return current.filter((item) => item.id !== id);
+    });
+  };
+
   return (
     <SheetContent className='!max-w-[700px]'>
       <SheetHeader>
@@ -154,7 +160,10 @@ const UpsertSheetContent = ({
             </Button>
           </form>
         </Form>
-        <ProductToSaleTable addedProducts={addedProducts} />
+        <ProductToSaleTable
+          handleDeleteProduct={handleDeleteProduct}
+          addedProducts={addedProducts}
+        />
       </div>
     </SheetContent>
   );

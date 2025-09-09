@@ -12,12 +12,18 @@ import React, { useMemo } from 'react';
 import { IAddedProduct } from './upsert-shet-content';
 import { format } from 'path';
 import { formatCurrency } from '@/utils/formatCurrency';
+import { Trash2Icon } from 'lucide-react';
+import { Button } from '@/app/_components/ui/button';
 
 interface IProductToSaleTableProps {
   addedProducts: IAddedProduct[];
+  handleDeleteProduct: (id: string) => void;
 }
 
-const ProductToSaleTable = ({ addedProducts }: IProductToSaleTableProps) => {
+const ProductToSaleTable = ({
+  addedProducts,
+  handleDeleteProduct,
+}: IProductToSaleTableProps) => {
   const subtotal = useMemo(
     () =>
       addedProducts.reduce((acc, item) => acc + item.quantity * item.price, 0),
@@ -32,7 +38,7 @@ const ProductToSaleTable = ({ addedProducts }: IProductToSaleTableProps) => {
           <TableHead className='w-[100px]'>Nome</TableHead>
           <TableHead>Valor Unitário</TableHead>
           <TableHead>Quantidade</TableHead>
-          <TableHead className='text-right'>Total</TableHead>
+          <TableHead>Total</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -41,15 +47,24 @@ const ProductToSaleTable = ({ addedProducts }: IProductToSaleTableProps) => {
             <TableCell className='font-medium'>{item.name}</TableCell>
             <TableCell>{formatCurrency(item.price)}</TableCell>
             <TableCell>{item.quantity}</TableCell>
+            <TableCell>{formatCurrency(item.price * item.quantity)}</TableCell>
             <TableCell className='text-right'>
-              {formatCurrency(item.price * item.quantity)}
+              <Button
+                variant='ghost'
+                onClick={() => handleDeleteProduct(item.id)}
+              >
+                <Trash2Icon
+                  className='text-right'
+                  size={16}
+                />
+              </Button>
             </TableCell>
           </TableRow>
         ))}
       </TableBody>
       <TableFooter>
         <TableRow>
-          <TableCell colSpan={3}>Subtotal</TableCell>
+          <TableCell colSpan={4}>Subtotal</TableCell>
           <TableCell className='text-right'>
             {formatCurrency(subtotal)}
           </TableCell>
