@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma-client';
 import { TUpsertSaleSchema, upsertSaleSchema } from './schema';
 import { SaleProduct } from '../../../../../generated/prisma';
 import { Decimal } from '../../../../../generated/prisma/runtime/library';
+import { revalidatePath } from 'next/cache';
 
 interface IFormattedProducts {
   productId: string;
@@ -53,5 +54,8 @@ export async function createSale({
         },
       });
     }
+
+    revalidatePath('/sales');
+    revalidatePath('/products');
   });
 }
