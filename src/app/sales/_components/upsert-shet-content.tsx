@@ -27,6 +27,7 @@ import { Button } from '@/app/_components/ui/button';
 import { PlusCircleIcon, PlusIcon } from 'lucide-react';
 import { TProduct } from '@/app/products/_components/columns';
 import ProductToSaleTable from './products-to-sale-table';
+import { toast } from 'sonner';
 
 interface IUpsertSheetContentProps {
   title: string;
@@ -36,8 +37,10 @@ interface IUpsertSheetContentProps {
 }
 
 const formSchema = z.object({
-  productId: z.uuid(),
-  quantity: z.int().positive(),
+  productId: z.uuid('Produto não pode ser vazio.'),
+  quantity: z
+    .int('Deve haver pelo menos um produto.')
+    .positive('Deve haver pelo menos um produto.'),
 });
 
 type TFormSchema = z.infer<typeof formSchema>;
@@ -65,11 +68,23 @@ const UpsertSheetContent = ({
   });
 
   const onSubmit = (data: TFormSchema) => {
-    const isProductAdded = addedProducts.find(
+    const productAdded = addedProducts.find(
       (item) => item.id === data.productId
     );
 
-    if (isProductAdded) {
+    const product = products.filter((item) => item.id === data.productId)[0];
+    const { stock } = product;
+
+    if (productAdded) {
+      const isProductOutOfStock = productAdded.quantity + data.quantity > stock;
+
+      if (isProductOutOfStock) {
+        return form.setError('quantity', {
+          message: `Quantidade indisponível em estoque. Há somente ${stock} peças desse produto.`,
+        });
+      }
+
+      form.reset();
       return setAddedProducts(
         addedProducts.map((item) => ({
           ...item,
@@ -78,8 +93,14 @@ const UpsertSheetContent = ({
       );
     }
 
-    const product = products.filter((item) => item.id === data.productId)[0];
+    const isProductOutOfStock = data.quantity > stock;
+    if (isProductOutOfStock) {
+      return form.setError('quantity', {
+        message: `Quantidade indisponível em estoque. Há somente ${stock} peças desse produto.`,
+      });
+    }
 
+    form.reset();
     setAddedProducts((currentProducts) => [
       ...currentProducts,
       {
@@ -89,8 +110,6 @@ const UpsertSheetContent = ({
         quantity: data.quantity,
       },
     ]);
-
-    form.reset();
   };
 
   const handleDeleteProduct = (productId: string) => {
