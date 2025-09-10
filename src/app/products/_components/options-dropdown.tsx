@@ -25,13 +25,12 @@ import {
   DropdownMenuTrigger,
 } from '@/app/_components/ui/dropdown-menu';
 
-import { Product } from '../../../../generated/prisma';
 import { EditProductDialog } from './edit-product-dialog';
 import ExcludeAlertDialog from './exclude-alert-dialog';
-import { TProduct } from './columns';
+import { IProductDTO } from '@/app/_data-access/products/get-products';
 
 interface IOptionsDropdownProps {
-  product: Omit<TProduct, 'createdAt' | 'updatedAt'>;
+  product: IProductDTO;
 }
 
 const OptionsDropdown = ({ product }: IOptionsDropdownProps) => {

@@ -10,7 +10,7 @@ export interface IProductDTO {
   status: TProductStatus;
 }
 
-async function getProducts(): Promise<IProductDTO[]> {
+export async function getProducts(): Promise<IProductDTO[]> {
   const products = await prisma.product.findMany();
   const formattedProducts: IProductDTO[] = products.map((item) => ({
     id: item.id,
@@ -23,10 +23,7 @@ async function getProducts(): Promise<IProductDTO[]> {
   return formattedProducts;
 }
 
-export const getProductsCached = unstable_cache(
-  getProducts,
-  ['get-all-products'],
-  {
-    revalidate: 10,
-  }
-);
+export const getProductsCached = unstable_cache(getProducts, [], {
+  revalidate: 10,
+  tags: ['get-all-products'],
+});

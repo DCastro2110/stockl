@@ -22,11 +22,12 @@ import {
 import { Input } from '@/app/_components/ui/input';
 
 import { Product } from '../../../../generated/prisma';
-import { TProduct } from './columns';
+
+import { IProductDTO } from '@/app/_data-access/products/get-products';
 
 interface IUpsertProductFormProps {
   onSubmit: (data: TUpsertProductSchema) => void;
-  product?: Omit<TProduct, 'createdAt' | 'updatedAt'>;
+  product?: IProductDTO;
 }
 
 export const UpsertProductForm = ({
