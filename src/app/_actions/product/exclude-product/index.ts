@@ -1,6 +1,6 @@
 'use server';
 
-import { revalidateTag } from 'next/cache';
+import { revalidatePath } from 'next/cache';
 
 import { prisma } from '@/lib/prisma-client';
 
@@ -14,5 +14,5 @@ export async function excludeProduct({ id }: TExcludeProductSchema) {
     },
   });
 
-  revalidateTag('get-all-products');
+  revalidatePath('/products');
 }
