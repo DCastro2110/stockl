@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { getProducts } from '../_data-access/products/get-products';
+import { getProductsCached } from '../_data-access/products/get-products';
 import { columns } from './_components/columns';
 import { CreateProductDialog } from './_components/create-product-dialog';
 import { DataTable } from './_components/data-table';
 
 const ProductsPage = async () => {
-  const product = await getProducts();
+  const product = await getProductsCached();
 
   return (
     <div className='px-8 py-8'>

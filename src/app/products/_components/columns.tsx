@@ -8,22 +8,20 @@ import { Product } from '@/../generated/prisma';
 import { Badge } from '@/app/_components/ui/badge';
 
 import OptionsDropdown from './options-dropdown';
+import {
+  IProductDTO,
+  TProductStatus,
+} from '@/app/_data-access/products/get-products';
 
-export type TProduct = Omit<Product, 'price'> & {
-  price: number;
-};
-
-function getStatus(status: string) {
+function getStatus(status: TProductStatus) {
   switch (status) {
-    case 'inactive':
-      return 'Inativo';
-    case 'active':
-      return 'Ativo';
-    case 'out_of_stock':
+    case 'IN_STOCK':
+      return 'Em estoque';
+    case 'OUT_OF_STOCK':
       return 'Fora de estoque';
   }
 }
-export const columns: ColumnDef<TProduct>[] = [
+export const columns: ColumnDef<IProductDTO>[] = [
   {
     accessorKey: 'name',
     header: 'Nome',
@@ -47,10 +45,10 @@ export const columns: ColumnDef<TProduct>[] = [
     accessorKey: 'status',
     header: 'Status',
     cell: ({ row }) => {
-      const product = row.original as TProduct;
+      const product = row.original as IProductDTO;
       const bagdeStyle = clsx(
         'w-40 p-2',
-        product.status === 'active'
+        product.status === 'IN_STOCK'
           ? 'bg-green-400 fill-green-600'
           : 'bg-red-400 fill-red-600'
       );
@@ -66,7 +64,7 @@ export const columns: ColumnDef<TProduct>[] = [
     accessorKey: 'options',
     header: 'Opções',
     cell: ({ row }) => {
-      const product = row.original as TProduct;
+      const product = row.original as IProductDTO;
       return (
         <OptionsDropdown
           product={{
