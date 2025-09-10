@@ -5,6 +5,8 @@ import { ColumnDef } from '@tanstack/react-table';
 import { ISaleDTO } from '@/app/_data-access/sale/get-sales';
 import { formatCurrency } from '@/utils/formatCurrency';
 
+import { SaleOptionsDropdown } from './options-dropdown';
+
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
@@ -44,5 +46,9 @@ export const columns: ColumnDef<ISaleDTO>[] = [
   {
     accessorKey: '',
     header: 'Ações',
+    cell: ({ row }) => {
+      const sale = row.original as ISaleDTO;
+      return <SaleOptionsDropdown sale={sale} />;
+    },
   },
 ];

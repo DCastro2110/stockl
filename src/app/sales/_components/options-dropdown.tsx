@@ -5,18 +5,13 @@ import {
   Trash2Icon,
 } from 'lucide-react';
 import React, { useState } from 'react';
-import { toast } from 'sonner';
 
-import { excludeProduct } from '@/app/_actions/product/exclude-product';
-import { upsertProduct } from '@/app/_actions/product/upsert-product';
-import { TUpsertProductSchema } from '@/app/_actions/product/upsert-product/schema';
 import { ExcludeAlertDialog } from '@/app/_components/common/exclude-alert-dialog';
 import {
   AlertDialog,
   AlertDialogTrigger,
 } from '@/app/_components/ui/alert-dialog';
 import { Button } from '@/app/_components/ui/button';
-import { Dialog, DialogTrigger } from '@/app/_components/ui/dialog';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,47 +20,25 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/app/_components/ui/dropdown-menu';
-import { IProductDTO } from '@/app/_data-access/products/get-products';
+import { Sheet, SheetTrigger } from '@/app/_components/ui/sheet';
+import { ISaleDTO } from '@/app/_data-access/sale/get-sales';
 
-import { EditProductDialog } from './edit-product-dialog';
-
-interface IProductOptionsDropdownProps {
-  product: IProductDTO;
+interface ISaleOptionsDropdownProps {
+  sale: ISaleDTO;
 }
 
-export const ProductOptionsDropdown = ({
-  product,
-}: IProductOptionsDropdownProps) => {
+export const SaleOptionsDropdown = ({ sale }: ISaleOptionsDropdownProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const handleCopyToClipboard = () => {
-    navigator.clipboard.writeText(product.id);
+    navigator.clipboard.writeText(sale.id);
   };
 
-  const handleExcludeProduct = async () => {
-    try {
-      const data = await excludeProduct({ id: product.id });
-      toast.success('Produto excluído com sucesso');
-    } catch (err) {
-      toast.error('Erro ao excluir o produto.');
-    }
-  };
+  const handleExcludeSale = async () => {};
 
-  const handleEditProduct = async (data: TUpsertProductSchema) => {
-    try {
-      await upsertProduct({
-        ...data,
-        id: product.id,
-      });
-      setIsDialogOpen(false);
-      toast('Produto editado com sucesso.');
-    } catch (err) {
-      console.log(err);
-      toast('Erro ao editar o produto.');
-    }
-  };
+  const handleEditSale = async () => {};
 
   return (
-    <Dialog
+    <Sheet
       open={isDialogOpen}
       onOpenChange={setIsDialogOpen}
     >
@@ -89,10 +62,10 @@ export const ProductOptionsDropdown = ({
               asChild
               className='flex flex-row items-center gap-2'
             >
-              <DialogTrigger>
+              <SheetTrigger>
                 <SquarePenIcon />
                 Editar
-              </DialogTrigger>
+              </SheetTrigger>
             </DropdownMenuItem>
             <DropdownMenuItem
               asChild
@@ -107,15 +80,10 @@ export const ProductOptionsDropdown = ({
         </DropdownMenu>
 
         <ExcludeAlertDialog
-          description='Essa ação não pode ser desfeita. O produto será apagado para sempre.'
-          handleExcludeProduct={handleExcludeProduct}
+          description='Essa ação não pode ser desfeita. Esta venda será apagada para sempre.'
+          handleExcludeProduct={handleExcludeSale}
         />
       </AlertDialog>
-
-      <EditProductDialog
-        product={product}
-        handleEditProduct={handleEditProduct}
-      />
-    </Dialog>
+    </Sheet>
   );
 };

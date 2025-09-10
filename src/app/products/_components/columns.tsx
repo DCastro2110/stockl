@@ -10,7 +10,7 @@ import {
   TProductStatus,
 } from '@/app/_data-access/products/get-products';
 
-import OptionsDropdown from './options-dropdown';
+import {ProductOptionsDropdown} from './options-dropdown';
 
 function getStatus(status: TProductStatus) {
   switch (status) {
@@ -65,7 +65,7 @@ export const columns: ColumnDef<IProductDTO>[] = [
     cell: ({ row }) => {
       const product = row.original as IProductDTO;
       return (
-        <OptionsDropdown
+        <ProductOptionsDropdown
           product={{
             name: product.name,
             status: product.status,

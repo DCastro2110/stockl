@@ -13,18 +13,18 @@ import { Button } from '@/app/_components/ui/button';
 
 interface IExcludeAlertDialogProps {
   handleExcludeProduct: () => void;
+  description: string;
 }
 
-const ExcludeAlertDialog = ({
+export const ExcludeAlertDialog = ({
   handleExcludeProduct,
+  description,
 }: IExcludeAlertDialogProps) => {
   return (
     <AlertDialogContent>
       <AlertDialogHeader>
         <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
-        <AlertDialogDescription>
-          Essa ação não pode ser desfeita. O produto será apagado para sempre.
-        </AlertDialogDescription>
+        <AlertDialogDescription>{description}</AlertDialogDescription>
       </AlertDialogHeader>
       <AlertDialogFooter>
         <AlertDialogCancel>Cancelar</AlertDialogCancel>
@@ -40,4 +40,3 @@ const ExcludeAlertDialog = ({
     </AlertDialogContent>
   );
 };
-export default ExcludeAlertDialog;

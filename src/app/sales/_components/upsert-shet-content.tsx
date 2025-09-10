@@ -150,11 +150,28 @@ const UpsertSheetContent = ({
     startTransition(saveSale);
   };
 
-  const quantityInStock = useMemo(() => {
-    const productId = form.getValues('productId');
-    const product = products.find((item) => item.id === productId);
-    return product?.stock || '';
-  }, [form, form.watch('productId'), products]);
+  const productIdField = form.watch('productId');
+  const selectedProduct = useMemo(() => {
+    const product = products.find((item) => item.id === productIdField);
+
+    return product;
+  }, [productIdField, products]);
+
+  const labelWithQuantityInStock = useMemo(() => {
+    if (!selectedProduct) {
+      return '';
+    }
+
+    if (selectedProduct.status === 'IN_STOCK') {
+      return (
+        <span className='text-green-500'>
+          {' '}
+          • {selectedProduct.stock} em estoque
+        </span>
+      );
+    }
+    return <span className='text-red-500'>Fora de estoque</span>;
+  }, [selectedProduct]);
 
   return (
     <SheetContent className='!max-w-[700px]'>
@@ -192,14 +209,13 @@ const UpsertSheetContent = ({
               name='quantity'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>
-                    Quantidade{' '}
-                    {form.getValues('productId') &&
-                      ` • ${quantityInStock} em estoque`}
-                  </FormLabel>
+                  <FormLabel>Quantidade {labelWithQuantityInStock}</FormLabel>
                   <FormControl>
                     <NumericFormat
-                      disabled={!form.getValues('productId')}
+                      disabled={
+                        !selectedProduct ||
+                        selectedProduct.status !== 'IN_STOCK'
+                      }
                       allowNegative={false}
                       customInput={Input}
                       onValueChange={(value) =>
