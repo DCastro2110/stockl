@@ -100,19 +100,19 @@ const UpsertSheetContent = ({
     );
 
     const product = products.filter((item) => item.id === data.productId)[0];
-    const { stock } = product;
+    let { stock } = product;
 
+    const productAlreadyAdded = salesProducts?.find(
+      (item) => item.productId === data.productId
+    );
     if (productAdded) {
-      const productAlreadyAdded = salesProducts?.find(
-        (item) => item.productId === data.productId
-      );
-
       let isProductOutOfStock = productAdded.quantity + data.quantity > stock;
 
       if (productAlreadyAdded) {
         isProductOutOfStock =
           productAdded.quantity + data.quantity >
           stock + productAlreadyAdded.quantity;
+        stock += productAlreadyAdded.quantity;
       }
 
       if (isProductOutOfStock) {
@@ -128,6 +128,10 @@ const UpsertSheetContent = ({
           quantity: item.quantity + data.quantity,
         }))
       );
+    }
+
+    if (productAlreadyAdded) {
+      stock += productAlreadyAdded.quantity;
     }
 
     const isProductOutOfStock = data.quantity > stock;
@@ -175,11 +179,25 @@ const UpsertSheetContent = ({
       return '';
     }
 
+    let quantityInStock = selectedProduct.stock;
+
+    const productAlreadyAddedToList = addedProducts.find(
+      (item) => item.id === productIdField
+    );
+    const productAlreadyAddedToSale = salesProducts?.find(
+      (item) => item.productId === productIdField
+    );
+
+    quantityInStock =
+      quantityInStock -
+      (productAlreadyAddedToList?.quantity || 0) +
+      (productAlreadyAddedToSale?.quantity || 0);
+
     if (selectedProduct.status === 'IN_STOCK') {
       return (
         <span className='text-green-500'>
           {' '}
-          • {selectedProduct.stock} em estoque
+          • {quantityInStock} ainda disponível
         </span>
       );
     }
