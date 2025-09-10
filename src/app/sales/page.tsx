@@ -1,10 +1,7 @@
 import React from 'react';
 
-import { Button } from '../_components/ui/button';
 import { IComboBoxOptions } from '../_components/ui/combobox';
-import { Sheet, SheetTrigger } from '../_components/ui/sheet';
 import { getProductsCached } from '../_data-access/products/get-products';
-import UpsertSheetContent from './_components/upsert-shet-content';
 import CreateSaleSheet from './_components/create-sale-sheet';
 
 const SalesPage = async () => {

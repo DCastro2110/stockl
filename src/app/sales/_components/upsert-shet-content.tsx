@@ -1,19 +1,16 @@
 'use client';
 
-import React, { startTransition, useActionState, useState } from 'react';
-
-import { Combobox, IComboBoxOptions } from '@/app/_components/ui/combobox';
-import {
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-} from '@/app/_components/ui/sheet';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2Icon, PlusCircleIcon } from 'lucide-react';
+import React, { startTransition, useActionState, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { NumericFormat } from 'react-number-format';
+import { toast } from 'sonner';
 import z from 'zod';
+
+import { createSale } from '@/app/_actions/sale/create-sale';
+import { Button } from '@/app/_components/ui/button';
+import { Combobox, IComboBoxOptions } from '@/app/_components/ui/combobox';
 import {
   Form,
   FormControl,
@@ -24,13 +21,17 @@ import {
   FormMessage,
 } from '@/app/_components/ui/form';
 import { Input } from '@/app/_components/ui/input';
-import { NumericFormat } from 'react-number-format';
-import { Button } from '@/app/_components/ui/button';
-import { Loader2Icon, PlusCircleIcon, PlusIcon } from 'lucide-react';
+import {
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+} from '@/app/_components/ui/sheet';
 import { TProduct } from '@/app/products/_components/columns';
+
 import ProductToSaleTable from './products-to-sale-table';
-import { toast } from 'sonner';
-import { createSale } from '@/app/_actions/sale/create-sale';
 
 interface IUpsertSheetContentProps {
   title: string;

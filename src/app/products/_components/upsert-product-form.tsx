@@ -20,9 +20,6 @@ import {
   FormMessage,
 } from '@/app/_components/ui/form';
 import { Input } from '@/app/_components/ui/input';
-
-import { Product } from '../../../../generated/prisma';
-
 import { IProductDTO } from '@/app/_data-access/products/get-products';
 
 interface IUpsertProductFormProps {

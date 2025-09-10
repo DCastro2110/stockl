@@ -1,11 +1,13 @@
 'use client';
 
-import { Button } from '@/app/_components/ui/button';
-import { Sheet, SheetTrigger } from '@/app/_components/ui/sheet';
 import React, { useState } from 'react';
-import UpsertSheetContent from './upsert-shet-content';
+
+import { Button } from '@/app/_components/ui/button';
 import { IComboBoxOptions } from '@/app/_components/ui/combobox';
+import { Sheet, SheetTrigger } from '@/app/_components/ui/sheet';
 import { TProduct } from '@/app/products/_components/columns';
+
+import UpsertSheetContent from './upsert-shet-content';
 
 interface ICreateSaleSheetProps {
   comboOptions: IComboBoxOptions[];

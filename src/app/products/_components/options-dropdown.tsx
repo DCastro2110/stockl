@@ -24,10 +24,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/app/_components/ui/dropdown-menu';
+import { IProductDTO } from '@/app/_data-access/products/get-products';
 
 import { EditProductDialog } from './edit-product-dialog';
 import ExcludeAlertDialog from './exclude-alert-dialog';
-import { IProductDTO } from '@/app/_data-access/products/get-products';
 
 interface IOptionsDropdownProps {
   product: IProductDTO;

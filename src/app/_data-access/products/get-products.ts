@@ -1,5 +1,6 @@
-import { prisma } from '@/lib/prisma-client';
 import { unstable_cache } from 'next/cache';
+
+import { prisma } from '@/lib/prisma-client';
 
 export type TProductStatus = 'OUT_OF_STOCK' | 'IN_STOCK';
 export interface IProductDTO {
@@ -10,7 +11,7 @@ export interface IProductDTO {
   status: TProductStatus;
 }
 
-export async function getProducts(): Promise<IProductDTO[]> {
+async function getProducts(): Promise<IProductDTO[]> {
   const products = await prisma.product.findMany();
   const formattedProducts: IProductDTO[] = products.map((item) => ({
     id: item.id,

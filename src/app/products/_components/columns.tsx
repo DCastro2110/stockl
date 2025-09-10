@@ -4,14 +4,13 @@ import { ColumnDef } from '@tanstack/react-table';
 import clsx from 'clsx';
 import { CircleIcon } from 'lucide-react';
 
-import { Product } from '@/../generated/prisma';
 import { Badge } from '@/app/_components/ui/badge';
-
-import OptionsDropdown from './options-dropdown';
 import {
   IProductDTO,
   TProductStatus,
 } from '@/app/_data-access/products/get-products';
+
+import OptionsDropdown from './options-dropdown';
 
 function getStatus(status: TProductStatus) {
   switch (status) {

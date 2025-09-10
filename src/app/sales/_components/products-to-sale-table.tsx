@@ -1,3 +1,7 @@
+import { Trash2Icon } from 'lucide-react';
+import React, { useMemo } from 'react';
+
+import { Button } from '@/app/_components/ui/button';
 import {
   Table,
   TableBody,
@@ -8,12 +12,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/app/_components/ui/table';
-import React, { useMemo } from 'react';
-import { IAddedProduct } from './upsert-shet-content';
-import { format } from 'path';
 import { formatCurrency } from '@/utils/formatCurrency';
-import { Trash2Icon } from 'lucide-react';
-import { Button } from '@/app/_components/ui/button';
+
+import { IAddedProduct } from './upsert-shet-content';
 
 interface IProductToSaleTableProps {
   addedProducts: IAddedProduct[];

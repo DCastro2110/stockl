@@ -1,10 +1,10 @@
 'use server';
 
-import { prisma } from '@/lib/prisma-client';
-import { TUpsertSaleSchema, upsertSaleSchema } from './schema';
-import { SaleProduct } from '../../../../../generated/prisma';
-import { Decimal } from '../../../../../generated/prisma/runtime/library';
 import { revalidatePath } from 'next/cache';
+
+import { prisma } from '@/lib/prisma-client';
+
+import { TUpsertSaleSchema, upsertSaleSchema } from './schema';
 
 interface IFormattedProducts {
   productId: string;
@@ -21,7 +21,7 @@ export async function createSale({
     products,
   });
 
-  let formattedProducts: IFormattedProducts[] = [];
+  const formattedProducts: IFormattedProducts[] = [];
 
   await prisma.$transaction(async (tx) => {
     const sale = await tx.sale.create({
@@ -30,7 +30,7 @@ export async function createSale({
       },
     });
 
-    for (let product of products) {
+    for (const product of products) {
       const selectedProduct = await prisma.product.findFirst({
         where: {
           id: product.id,
