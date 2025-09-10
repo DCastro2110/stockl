@@ -19,7 +19,6 @@ model Product {
   name        String
   stock       Int
   price       Decimal       @db.Decimal(10, 2)
-  status      String
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
   SaleProduct SaleProduct[]
@@ -27,8 +26,6 @@ model Product {
 
 model Sale {
   id            String        @id @default(uuid())
-  totalQuantity Int?
-  totalPrice    Decimal?       @db.Decimal(10, 2)
   date          DateTime
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
