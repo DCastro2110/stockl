@@ -72,7 +72,6 @@ const listOfProducts = [
     name: 'Macacão Pantalona - Shoulder',
     stock: 75,
     price: 480.0,
-    status: 'out_of_stock',
   },
   {
     name: 'Top Cropped - Amaro',
@@ -153,7 +152,6 @@ const listOfProducts = [
     name: 'Bata Indiana - Mercatto',
     stock: 98,
     price: 139.0,
-    status: 'out_of_stock',
   },
   {
     name: 'Sobretudo de Lã - John John',
@@ -219,7 +217,6 @@ const listOfProducts = [
     name: 'Jardineira Saruel - Farm',
     stock: 48,
     price: 420.0,
-    status: 'out_of_stock',
   },
   {
     name: 'Blusa Gola Alta - Zara',
