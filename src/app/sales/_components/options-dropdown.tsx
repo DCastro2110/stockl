@@ -4,8 +4,11 @@ import {
   SquarePenIcon,
   Trash2Icon,
 } from 'lucide-react';
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
+import { toast } from 'sonner';
 
+import { TCreateSaleSchema } from '@/app/_actions/sale/create-sale/schema';
+import { updateSale } from '@/app/_actions/sale/update-sale';
 import { ExcludeAlertDialog } from '@/app/_components/common/exclude-alert-dialog';
 import {
   AlertDialog,
@@ -22,42 +25,51 @@ import {
   DropdownMenuTrigger,
 } from '@/app/_components/ui/dropdown-menu';
 import { Sheet, SheetTrigger } from '@/app/_components/ui/sheet';
+import { IProductDTO } from '@/app/_data-access/products/get-products';
 import { ISaleDTO } from '@/app/_data-access/sale/get-sales';
 
 import UpsertSheetContent from './upsert-sheet-content';
 
 interface ISaleOptionsDropdownProps {
   sale: ISaleDTO;
+  products: IProductDTO[];
+  comboOptions: IComboBoxOptions[];
 }
 
-export const SaleOptionsDropdown = ({ sale }: ISaleOptionsDropdownProps) => {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-
-  const products = useMemo(
-    () => sale.SaleProducts.map(({ product }) => product),
-    [sale]
-  );
-  const comboOptions: IComboBoxOptions[] = useMemo(
-    () =>
-      products.map((item) => ({
-        value: item.id,
-        label: item.name,
-      })),
-    [products]
-  );
+export const SaleOptionsDropdown = ({
+  sale,
+  products,
+  comboOptions,
+}: ISaleOptionsDropdownProps) => {
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   const handleCopyToClipboard = () => {
     navigator.clipboard.writeText(sale.id);
   };
 
-  const handleExcludeSale = async () => {};
+  const handleEditSale = async (data: TCreateSaleSchema) => {
+    try {
+      await updateSale({ ...data, saleId: sale.id });
+      setIsSheetOpen(false);
+      toast.success('Venda editada com sucesso.');
+    } catch (err) {
+      toast.error('Erro ao editar a venda.');
+    }
+  };
 
-  const handleEditSale = async () => {};
+  const handleExcludeSale = async () => {
+    try {
+      // await excludeSale({ id: sale.id });
+      toast.success('Venda excluída com sucesso.');
+    } catch (err) {
+      toast.error('Erro ao excluir a venda.');
+    }
+  };
 
   return (
     <Sheet
-      open={isDialogOpen}
-      onOpenChange={setIsDialogOpen}
+      open={isSheetOpen}
+      onOpenChange={setIsSheetOpen}
     >
       <AlertDialog>
         <DropdownMenu>
@@ -111,8 +123,11 @@ export const SaleOptionsDropdown = ({ sale }: ISaleOptionsDropdownProps) => {
         salesProducts={sale.SaleProducts.map((saleProduct) => ({
           id: saleProduct.id,
           name: saleProduct.product.name,
-          unitPrice: saleProduct.unitValue,
+          unitPrice: saleProduct.unitPrice,
           quantity: saleProduct.quantity,
+          productId: saleProduct.productId,
+          product: saleProduct.product,
+          saleId: saleProduct.saleId,
         }))}
       />
     </Sheet>

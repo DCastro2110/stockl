@@ -1,6 +1,6 @@
 import z from 'zod';
 
-export const createSaleSchema = z.object({
+export const updateSaleSchema = z.object({
   products: z.array(
     z.object({
       id: z.uuid('Invalid product ID.'),
@@ -10,6 +10,7 @@ export const createSaleSchema = z.object({
     })
   ),
   date: z.date('Invalid date.').optional(),
+  saleId: z.uuid('Invalid sale ID.'),
 });
 
-export type TCreateSaleSchema = z.infer<typeof createSaleSchema>;
+export type TUpdateSaleSchema = z.infer<typeof updateSaleSchema>;

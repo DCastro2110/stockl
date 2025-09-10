@@ -29,7 +29,6 @@ const CreateSaleSheet = ({ comboOptions, products }: ICreateSaleSheetProps) => {
       toast.error('Erro ao criar a venda.');
     }
   };
-  const handleCloseSheet = () => {};
 
   return (
     <Sheet

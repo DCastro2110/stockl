@@ -15,6 +15,12 @@ const SalesPage = async () => {
     label: item.name,
   }));
 
+  const dataTable = sales.map((sale) => ({
+    ...sale,
+    products,
+    comboOptions,
+  }));
+
   return (
     <div className='px-8 py-8'>
       <header className='flex flex-col gap-2 px-2 py-4'>
@@ -27,7 +33,7 @@ const SalesPage = async () => {
           />
         </div>
         <DataTable
-          data={sales}
+          data={dataTable}
           columns={columns}
         />
       </header>

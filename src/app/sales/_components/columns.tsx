@@ -2,6 +2,8 @@
 
 import { ColumnDef } from '@tanstack/react-table';
 
+import { IComboBoxOptions } from '@/app/_components/ui/combobox';
+import { IProductDTO } from '@/app/_data-access/products/get-products';
 import { ISaleDTO } from '@/app/_data-access/sale/get-sales';
 import { formatCurrency } from '@/utils/formatCurrency';
 
@@ -10,7 +12,12 @@ import { SaleOptionsDropdown } from './options-dropdown';
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
-export const columns: ColumnDef<ISaleDTO>[] = [
+interface ISaleTableColumns extends ISaleDTO {
+  products: IProductDTO[];
+  comboOptions: IComboBoxOptions[];
+}
+
+export const columns: ColumnDef<ISaleTableColumns>[] = [
   {
     accessorKey: 'name',
     header: 'Produtos',
@@ -27,8 +34,8 @@ export const columns: ColumnDef<ISaleDTO>[] = [
     accessorKey: 'totalValue',
     header: 'Valor Total',
     cell: ({ row }) => {
-      const { totalValue } = row.original;
-      return formatCurrency(totalValue);
+      const { totalPrice } = row.original;
+      return formatCurrency(totalPrice);
     },
   },
   {
@@ -48,7 +55,20 @@ export const columns: ColumnDef<ISaleDTO>[] = [
     header: 'Ações',
     cell: ({ row }) => {
       const sale = row.original as ISaleDTO;
-      return <SaleOptionsDropdown sale={sale} />;
+      return (
+        <SaleOptionsDropdown
+          sale={{
+            date: sale.date,
+            name: sale.name,
+            id: sale.id,
+            totalQuantity: sale.totalQuantity,
+            totalPrice: sale.totalPrice,
+            SaleProducts: sale.SaleProducts,
+          }}
+          products={row.original.products}
+          comboOptions={row.original.comboOptions}
+        />
+      );
     },
   },
 ];

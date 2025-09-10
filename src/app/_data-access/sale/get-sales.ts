@@ -2,26 +2,23 @@ import { unstable_cache } from 'next/cache';
 
 import { prisma } from '@/lib/prisma-client';
 
+import { IProductDTO } from '../products/get-products';
+
+export interface ISaleProductDTO {
+  id: string;
+  saleId: string;
+  productId: string;
+  quantity: number;
+  unitPrice: number;
+  product: IProductDTO;
+}
 export interface ISaleDTO {
   name: string;
   id: string;
-  totalValue: number;
+  totalPrice: number;
   totalQuantity: number;
   date: Date;
-  SaleProducts: {
-    id: string;
-    saleId: string;
-    productId: string;
-    quantity: number;
-    unitValue: number;
-    product: {
-      id: string;
-      name: string;
-      price: number;
-      stock: number;
-      status: 'IN_STOCK' | 'OUT_OF_STOCK';
-    };
-  }[];
+  SaleProducts: ISaleProductDTO[];
 }
 
 async function getSales(): Promise<ISaleDTO[]> {
@@ -38,7 +35,7 @@ async function getSales(): Promise<ISaleDTO[]> {
   const formattedSales: ISaleDTO[] = sales.map((sale) => ({
     name: sale.SaleProduct.map((sp) => sp.product.name).join(' • '),
     id: sale.id,
-    totalValue: sale.SaleProduct.reduce(
+    totalPrice: sale.SaleProduct.reduce(
       (acc, curr) => acc + Number(curr.unitPrice) * curr.quantity,
       0
     ),
@@ -52,7 +49,7 @@ async function getSales(): Promise<ISaleDTO[]> {
       saleId: saleProduct.saleId,
       productId: saleProduct.productId,
       quantity: saleProduct.quantity,
-      unitValue: Number(saleProduct.unitPrice),
+      unitPrice: Number(saleProduct.unitPrice),
       product: {
         id: saleProduct.product.id,
         name: saleProduct.product.name,

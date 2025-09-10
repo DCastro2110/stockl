@@ -34,6 +34,7 @@ import {
   SheetTitle,
 } from '@/app/_components/ui/sheet';
 import { IProductDTO } from '@/app/_data-access/products/get-products';
+import { ISaleProductDTO } from '@/app/_data-access/sale/get-sales';
 
 import ProductToSaleTable from './products-to-sale-table';
 
@@ -42,9 +43,9 @@ interface IUpsertSheetContentProps {
   description: string;
   options: IComboBoxOptions[];
   products: IProductDTO[];
-  salesProducts?: IAddedProduct[];
+  salesProducts?: ISaleProductDTO[];
   endButtonLabel: string;
-  onSaveSale: (data: TCreateSaleSchema) => void;
+  onSaveSale: (data: TCreateSaleSchema) => Promise<void>;
 }
 
 const formSchema = z.object({
@@ -72,11 +73,18 @@ const UpsertSheetContent = ({
   endButtonLabel,
   onSaveSale,
 }: IUpsertSheetContentProps) => {
-  const [addedProducts, setAddedProducts] = useState<IAddedProduct[]>(salesProducts || []);
-  const [, saveSale, isPending] = useActionState(
-    () => onSaveSale({ products: addedProducts }),
-    null
+  const [addedProducts, setAddedProducts] = useState<IAddedProduct[]>(
+    salesProducts?.map((item) => ({
+      name: item.product.name,
+      unitPrice: item.unitPrice,
+      id: item.productId,
+      quantity: item.quantity,
+    })) || []
   );
+  const [, saveSale, isPending] = useActionState(async () => {
+    await onSaveSale({ products: addedProducts });
+    setAddedProducts([]);
+  }, null);
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -95,7 +103,17 @@ const UpsertSheetContent = ({
     const { stock } = product;
 
     if (productAdded) {
-      const isProductOutOfStock = productAdded.quantity + data.quantity > stock;
+      const productAlreadyAdded = salesProducts?.find(
+        (item) => item.productId === data.productId
+      );
+
+      let isProductOutOfStock = productAdded.quantity + data.quantity > stock;
+
+      if (productAlreadyAdded) {
+        isProductOutOfStock =
+          productAdded.quantity + data.quantity >
+          stock + productAlreadyAdded.quantity;
+      }
 
       if (isProductOutOfStock) {
         return form.setError('quantity', {
