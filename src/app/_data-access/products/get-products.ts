@@ -13,13 +13,15 @@ export interface IProductDTO {
 
 async function getProducts(): Promise<IProductDTO[]> {
   const products = await prisma.product.findMany();
-  const formattedProducts: IProductDTO[] = products.map((item) => ({
-    id: item.id,
-    name: item.name,
-    status: item.stock > 0 ? 'IN_STOCK' : 'OUT_OF_STOCK',
-    price: Number(item.price),
-    stock: item.stock,
-  }));
+  const formattedProducts: IProductDTO[] = products.map((item) => {
+    return {
+      id: item.id,
+      name: item.name,
+      status: item.stock > 0 ? 'IN_STOCK' : 'OUT_OF_STOCK',
+      price: Number(item.price),
+      stock: item.stock,
+    };
+  });
 
   return formattedProducts;
 }
