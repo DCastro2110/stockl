@@ -51,6 +51,17 @@ export async function createSale({
           saleId: sale.id,
         },
       });
+
+      await tx.product.update({
+        where: {
+          id: product.id,
+        },
+        data: {
+          stock: {
+            decrement: product.quantity,
+          },
+        },
+      });
     }
 
     revalidatePath('/sales');
