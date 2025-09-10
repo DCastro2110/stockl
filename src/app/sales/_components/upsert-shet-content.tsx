@@ -29,7 +29,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/app/_components/ui/sheet';
-import { TProduct } from '@/app/products/_components/columns';
+import { IProductDTO } from '@/app/_data-access/products/get-products';
 
 import ProductToSaleTable from './products-to-sale-table';
 
@@ -37,7 +37,7 @@ interface IUpsertSheetContentProps {
   title: string;
   description: string;
   options: IComboBoxOptions[];
-  products: TProduct[];
+  products: IProductDTO[];
   endButtonLabel: string;
   handleCloseSheet: () => void;
 }

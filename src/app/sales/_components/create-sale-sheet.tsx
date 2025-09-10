@@ -5,13 +5,13 @@ import React, { useState } from 'react';
 import { Button } from '@/app/_components/ui/button';
 import { IComboBoxOptions } from '@/app/_components/ui/combobox';
 import { Sheet, SheetTrigger } from '@/app/_components/ui/sheet';
-import { TProduct } from '@/app/products/_components/columns';
+import { IProductDTO } from '@/app/_data-access/products/get-products';
 
 import UpsertSheetContent from './upsert-shet-content';
 
 interface ICreateSaleSheetProps {
   comboOptions: IComboBoxOptions[];
-  products: TProduct[];
+  products: IProductDTO[];
 }
 
 const CreateSaleSheet = ({ comboOptions, products }: ICreateSaleSheetProps) => {

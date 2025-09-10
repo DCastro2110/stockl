@@ -1,9 +1,10 @@
 import React from 'react';
 
+import { DataTable } from '@/app/_components/common/data-table';
+
 import { getProductsCached } from '../_data-access/products/get-products';
 import { columns } from './_components/columns';
 import { CreateProductDialog } from './_components/create-product-dialog';
-import { DataTable } from './_components/data-table';
 
 const ProductsPage = async () => {
   const product = await getProductsCached();

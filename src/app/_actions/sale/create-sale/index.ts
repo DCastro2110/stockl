@@ -21,8 +21,6 @@ export async function createSale({
     products,
   });
 
-  const formattedProducts: IFormattedProducts[] = [];
-
   await prisma.$transaction(async (tx) => {
     const sale = await tx.sale.create({
       data: {
