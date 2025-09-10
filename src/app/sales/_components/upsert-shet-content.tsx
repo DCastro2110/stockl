@@ -2,7 +2,12 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2Icon, PlusCircleIcon } from 'lucide-react';
-import React, { startTransition, useActionState, useState } from 'react';
+import React, {
+  startTransition,
+  useActionState,
+  useMemo,
+  useState,
+} from 'react';
 import { useForm } from 'react-hook-form';
 import { NumericFormat } from 'react-number-format';
 import { toast } from 'sonner';
@@ -145,6 +150,12 @@ const UpsertSheetContent = ({
     startTransition(saveSale);
   };
 
+  const quantityInStock = useMemo(() => {
+    const productId = form.getValues('productId');
+    const product = products.find((item) => item.id === productId);
+    return product?.stock || '';
+  }, [form, form.watch('productId'), products]);
+
   return (
     <SheetContent className='!max-w-[700px]'>
       <SheetHeader>
@@ -181,9 +192,14 @@ const UpsertSheetContent = ({
               name='quantity'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Quantidade</FormLabel>
+                  <FormLabel>
+                    Quantidade{' '}
+                    {form.getValues('productId') &&
+                      ` • ${quantityInStock} em estoque`}
+                  </FormLabel>
                   <FormControl>
                     <NumericFormat
+                      disabled={!form.getValues('productId')}
                       allowNegative={false}
                       customInput={Input}
                       onValueChange={(value) =>
