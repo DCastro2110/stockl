@@ -14,7 +14,7 @@ import {
 } from '@/app/_components/ui/table';
 import { formatCurrency } from '@/utils/formatCurrency';
 
-import { IAddedProduct } from './upsert-shet-content';
+import { IAddedProduct } from './upsert-sheet-content';
 
 interface IProductToSaleTableProps {
   addedProducts: IAddedProduct[];

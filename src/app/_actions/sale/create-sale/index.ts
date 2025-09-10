@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache';
 
 import { prisma } from '@/lib/prisma-client';
 
-import { TUpsertSaleSchema, upsertSaleSchema } from './schema';
+import { createSaleSchema, TCreateSaleSchema } from './schema';
 
 interface IFormattedProducts {
   productId: string;
@@ -15,8 +15,8 @@ interface IFormattedProducts {
 export async function createSale({
   date: dateOfSale,
   products,
-}: TUpsertSaleSchema) {
-  upsertSaleSchema.parse({
+}: TCreateSaleSchema) {
+  createSaleSchema.parse({
     date: dateOfSale,
     products,
   });

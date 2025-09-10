@@ -10,10 +10,9 @@ import React, {
 } from 'react';
 import { useForm } from 'react-hook-form';
 import { NumericFormat } from 'react-number-format';
-import { toast } from 'sonner';
 import z from 'zod';
 
-import { createSale } from '@/app/_actions/sale/create-sale';
+import { TCreateSaleSchema } from '@/app/_actions/sale/create-sale/schema';
 import { Button } from '@/app/_components/ui/button';
 import { Combobox, IComboBoxOptions } from '@/app/_components/ui/combobox';
 import {
@@ -43,8 +42,9 @@ interface IUpsertSheetContentProps {
   description: string;
   options: IComboBoxOptions[];
   products: IProductDTO[];
+  salesProducts?: IAddedProduct[];
   endButtonLabel: string;
-  handleCloseSheet: () => void;
+  onSaveSale: (data: TCreateSaleSchema) => void;
 }
 
 const formSchema = z.object({
@@ -68,20 +68,15 @@ const UpsertSheetContent = ({
   description,
   options,
   products,
+  salesProducts,
   endButtonLabel,
-  handleCloseSheet,
+  onSaveSale,
 }: IUpsertSheetContentProps) => {
-  const [addedProducts, setAddedProducts] = useState<IAddedProduct[]>([]);
-  const [, saveSale, isPending] = useActionState(async () => {
-    try {
-      await createSale({ products: addedProducts });
-      handleCloseSheet();
-      setAddedProducts([]);
-      toast.success('Venda criada com sucesso.');
-    } catch (err) {
-      toast.error('Erro ao criar a venda.');
-    }
-  }, null);
+  const [addedProducts, setAddedProducts] = useState<IAddedProduct[]>(salesProducts || []);
+  const [, saveSale, isPending] = useActionState(
+    () => onSaveSale({ products: addedProducts }),
+    null
+  );
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {

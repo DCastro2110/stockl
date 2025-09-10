@@ -1,6 +1,6 @@
 import z from 'zod';
 
-export const upsertSaleSchema = z.object({
+export const createSaleSchema = z.object({
   products: z.array(
     z.object({
       id: z.uuid('Invalid product ID.'),
@@ -13,4 +13,4 @@ export const upsertSaleSchema = z.object({
   saleId: z.uuid('Invalid sale ID.').optional(),
 });
 
-export type TUpsertSaleSchema = z.infer<typeof upsertSaleSchema>;
+export type TCreateSaleSchema = z.infer<typeof createSaleSchema>;

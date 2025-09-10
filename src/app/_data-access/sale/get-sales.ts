@@ -8,6 +8,20 @@ export interface ISaleDTO {
   totalValue: number;
   totalQuantity: number;
   date: Date;
+  SaleProducts: {
+    id: string;
+    saleId: string;
+    productId: string;
+    quantity: number;
+    unitValue: number;
+    product: {
+      id: string;
+      name: string;
+      price: number;
+      stock: number;
+      status: 'IN_STOCK' | 'OUT_OF_STOCK';
+    };
+  }[];
 }
 
 async function getSales(): Promise<ISaleDTO[]> {
@@ -33,12 +47,19 @@ async function getSales(): Promise<ISaleDTO[]> {
       0
     ),
     date: sale.date,
-    SaleProduct: sale.SaleProduct.map((saleProduct) => ({
+    SaleProducts: sale.SaleProduct.map((saleProduct) => ({
       id: saleProduct.id,
       saleId: saleProduct.saleId,
       productId: saleProduct.productId,
       quantity: saleProduct.quantity,
       unitValue: Number(saleProduct.unitPrice),
+      product: {
+        id: saleProduct.product.id,
+        name: saleProduct.product.name,
+        price: Number(saleProduct.product.price),
+        stock: saleProduct.product.stock,
+        status: saleProduct.product.stock > 0 ? 'IN_STOCK' : 'OUT_OF_STOCK',
+      },
     })),
   }));
 

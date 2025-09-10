@@ -4,7 +4,7 @@ import {
   SquarePenIcon,
   Trash2Icon,
 } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { ExcludeAlertDialog } from '@/app/_components/common/exclude-alert-dialog';
 import {
@@ -12,6 +12,7 @@ import {
   AlertDialogTrigger,
 } from '@/app/_components/ui/alert-dialog';
 import { Button } from '@/app/_components/ui/button';
+import { IComboBoxOptions } from '@/app/_components/ui/combobox';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,12 +24,28 @@ import {
 import { Sheet, SheetTrigger } from '@/app/_components/ui/sheet';
 import { ISaleDTO } from '@/app/_data-access/sale/get-sales';
 
+import UpsertSheetContent from './upsert-sheet-content';
+
 interface ISaleOptionsDropdownProps {
   sale: ISaleDTO;
 }
 
 export const SaleOptionsDropdown = ({ sale }: ISaleOptionsDropdownProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const products = useMemo(
+    () => sale.SaleProducts.map(({ product }) => product),
+    [sale]
+  );
+  const comboOptions: IComboBoxOptions[] = useMemo(
+    () =>
+      products.map((item) => ({
+        value: item.id,
+        label: item.name,
+      })),
+    [products]
+  );
+
   const handleCopyToClipboard = () => {
     navigator.clipboard.writeText(sale.id);
   };
@@ -84,6 +101,20 @@ export const SaleOptionsDropdown = ({ sale }: ISaleOptionsDropdownProps) => {
           handleExcludeProduct={handleExcludeSale}
         />
       </AlertDialog>
+      <UpsertSheetContent
+        description='Edite sua venda abaixo.'
+        endButtonLabel='Salvar'
+        onSaveSale={handleEditSale}
+        products={products}
+        title='Editar venda'
+        options={comboOptions}
+        salesProducts={sale.SaleProducts.map((saleProduct) => ({
+          id: saleProduct.id,
+          name: saleProduct.product.name,
+          unitPrice: saleProduct.unitValue,
+          quantity: saleProduct.quantity,
+        }))}
+      />
     </Sheet>
   );
 };
