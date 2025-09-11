@@ -2,6 +2,13 @@ import React from 'react';
 
 import { DataTable } from '@/app/_components/common/data-table';
 
+import {
+  Header,
+  HeaderLeft,
+  HeaderRight,
+  HeaderSubtitle,
+  HeaderTitle,
+} from '../_components/common/header';
 import { getProductsCached } from '../_data-access/products/get-products';
 import { columns } from './_components/columns';
 import { CreateProductDialog } from './_components/create-product-dialog';
@@ -11,13 +18,16 @@ const ProductsPage = async () => {
 
   return (
     <div className='px-8 py-8'>
-      <header className='flex flex-col gap-2 px-2 py-4'>
-        <h2 className='text-sm font-semibold text-green-500'>Produtos</h2>
-        <div className='flex w-full items-center justify-between'>
-          <h1 className='text-xl font-semibold'>Gestão de Produtos</h1>
+      <Header>
+        <HeaderLeft>
+          <HeaderSubtitle>Produtos</HeaderSubtitle>
+          <HeaderTitle>Gestão de Produtos</HeaderTitle>
+        </HeaderLeft>
+        <HeaderRight>
           <CreateProductDialog />
-        </div>
-      </header>
+        </HeaderRight>
+      </Header>
+
       <DataTable
         columns={columns}
         data={product}

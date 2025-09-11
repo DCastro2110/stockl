@@ -1,6 +1,13 @@
 import React from 'react';
 
 import { DataTable } from '../_components/common/data-table';
+import {
+  Header,
+  HeaderLeft,
+  HeaderRight,
+  HeaderSubtitle,
+  HeaderTitle,
+} from '../_components/common/header';
 import { IComboBoxOptions } from '../_components/ui/combobox';
 import { getProductsCached } from '../_data-access/products/get-products';
 import { getSalesCached } from '../_data-access/sale/get-sales';
@@ -23,20 +30,23 @@ const SalesPage = async () => {
 
   return (
     <div className='px-8 py-8'>
-      <header className='flex flex-col gap-2 px-2 py-4'>
-        <h2 className='text-sm font-semibold text-green-500'>Vendas</h2>
-        <div className='flex w-full items-center justify-between'>
-          <h1 className='text-xl font-semibold'>Gestão de Vendas</h1>
+      <Header>
+        <HeaderLeft>
+          <HeaderSubtitle>Vendas</HeaderSubtitle>
+          <HeaderTitle>Gestão de Vendas</HeaderTitle>
+        </HeaderLeft>
+        <HeaderRight>
           <CreateSaleSheet
             products={products}
             comboOptions={comboOptions}
           />
-        </div>
-        <DataTable
-          data={dataTable}
-          columns={columns}
-        />
-      </header>
+        </HeaderRight>
+      </Header>
+
+      <DataTable
+        data={dataTable}
+        columns={columns}
+      />
     </div>
   );
 };
