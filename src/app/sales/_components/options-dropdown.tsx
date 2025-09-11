@@ -8,6 +8,7 @@ import React, { useState } from 'react';
 import { toast } from 'sonner';
 
 import { TCreateSaleSchema } from '@/app/_actions/sale/create-sale/schema';
+import { deleteSale } from '@/app/_actions/sale/delete-sale';
 import { updateSale } from '@/app/_actions/sale/update-sale';
 import { ExcludeAlertDialog } from '@/app/_components/common/exclude-alert-dialog';
 import {
@@ -57,9 +58,9 @@ export const SaleOptionsDropdown = ({
     }
   };
 
-  const handleExcludeSale = async () => {
+  const handleDeleteSale = async () => {
     try {
-      // await excludeSale({ id: sale.id });
+      await deleteSale({ id: sale.id });
       toast.success('Venda excluída com sucesso.');
     } catch (err) {
       toast.error('Erro ao excluir a venda.');
@@ -110,7 +111,7 @@ export const SaleOptionsDropdown = ({
 
         <ExcludeAlertDialog
           description='Essa ação não pode ser desfeita. Esta venda será apagada para sempre.'
-          handleExcludeProduct={handleExcludeSale}
+          handleExcludeProduct={handleDeleteSale}
         />
       </AlertDialog>
       <UpsertSheetContent
