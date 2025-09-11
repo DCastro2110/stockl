@@ -196,13 +196,12 @@ const UpsertSheetContent = ({
     if (selectedProduct.status === 'IN_STOCK') {
       return (
         <span className='text-green-500'>
-          {' '}
           • {quantityInStock} ainda disponível
         </span>
       );
     }
     return <span className='text-red-500'>Fora de estoque</span>;
-  }, [selectedProduct]);
+  }, [selectedProduct, productIdField, salesProducts, addedProducts]);
 
   return (
     <SheetContent className='!max-w-[700px]'>
