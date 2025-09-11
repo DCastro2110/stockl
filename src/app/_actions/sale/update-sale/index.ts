@@ -82,5 +82,6 @@ export async function updateSale({
 
     revalidatePath('/sales');
     revalidatePath('/products');
+    revalidatePath('/');
   });
 }

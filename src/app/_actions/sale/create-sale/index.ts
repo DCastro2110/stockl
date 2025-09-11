@@ -66,5 +66,6 @@ export async function createSale({
 
     revalidatePath('/sales');
     revalidatePath('/products');
+    revalidatePath('/');
   });
 }

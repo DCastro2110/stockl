@@ -29,4 +29,5 @@ export async function upsertProduct(data: TUpsertProductSchema) {
   } catch (err) {}
 
   revalidatePath('/products');
+  revalidatePath('/');
 }

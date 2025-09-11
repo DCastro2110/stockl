@@ -15,4 +15,5 @@ export async function excludeProduct({ id }: TExcludeProductSchema) {
   });
 
   revalidatePath('/products');
+  revalidatePath('/');
 }
