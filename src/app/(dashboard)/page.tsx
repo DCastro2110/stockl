@@ -13,6 +13,14 @@ import {
   HeaderSubtitle,
   HeaderTitle,
 } from '../_components/common/header';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '../_components/ui/card';
+import { ScrollArea } from '../_components/ui/scroll-area';
 import { getDashboard } from '../_data-access/dashboard/get-dashboard';
 import { BarChartDefault } from './_components/bar-chart-default';
 import {
@@ -21,9 +29,9 @@ import {
   InfoCardTitle,
   InfoCardValue,
 } from './_components/info-card';
+import { ProductMoreSold } from './_components/product-more-sold';
 
 const Dashboard = async () => {
-
   const {
     todaysRevenue,
     totalInStock,
@@ -31,6 +39,7 @@ const Dashboard = async () => {
     totalRevenue,
     totalSales,
     totalSalesInLast14Days,
+    theProductsMoreSold,
   } = await getDashboard();
   return (
     <div className='p-8'>
@@ -81,7 +90,41 @@ const Dashboard = async () => {
             <InfoCardValue>{totalProducts}</InfoCardValue>
           </InfoCard>
         </div>
-        <BarChartDefault chartData={totalSalesInLast14Days} />
+        <div className='grid grid-cols-3 gap-4'>
+          <BarChartDefault
+            className='col-span-2'
+            chartData={totalSalesInLast14Days}
+          />
+          <Card>
+            <CardHeader>
+              <CardTitle>Produtos mais vendidos</CardTitle>
+              <CardDescription>
+                Produtos mais vendidos de todos os tempos
+              </CardDescription>
+            </CardHeader>
+            <CardContent className='flex min-h-100 items-center justify-center'>
+              {theProductsMoreSold.length === 0 ? (
+                <div className='flex h-full w-full items-center justify-center'>
+                  <p>Não há nenhum produto mais vendido.</p>
+                </div>
+              ) : (
+                <ScrollArea className='h-full max-h-100 w-full'>
+                  <div className='flex flex-col gap-4'>
+                    {theProductsMoreSold.map((product) => (
+                      <ProductMoreSold
+                        productName={product.name}
+                        productPrice={product.price}
+                        productStatus={product.status}
+                        totalQuantitySold={product.totalQuantity}
+                        key={product.id}
+                      />
+                    ))}
+                  </div>
+                </ScrollArea>
+              )}
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );

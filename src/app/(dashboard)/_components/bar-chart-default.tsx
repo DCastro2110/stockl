@@ -22,6 +22,7 @@ export const description = 'A bar chart';
 
 interface IBarChartDefaultProps {
   chartData: ITotalSalesInLast14Days[];
+  className?: string;
 }
 
 const chartConfig = {
@@ -31,10 +32,13 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export const BarChartDefault = ({ chartData }: IBarChartDefaultProps) => {
+export const BarChartDefault = ({
+  chartData,
+  className,
+}: IBarChartDefaultProps) => {
   console.log('chartData', chartData);
   return (
-    <Card>
+    <Card className={className}>
       <CardHeader>
         <CardTitle>Receita</CardTitle>
         <CardDescription>Últimos 14 dias</CardDescription>
@@ -66,6 +70,9 @@ export const BarChartDefault = ({ chartData }: IBarChartDefaultProps) => {
                 content={
                   <ChartTooltipContent
                     formatter={(value) => formatCurrency(Number(value))}
+                    labelFormatter={(label) =>
+                      new Date(label).toLocaleDateString()
+                    }
                   />
                 }
               />

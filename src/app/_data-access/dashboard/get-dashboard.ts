@@ -5,9 +5,19 @@ import { cookies } from 'next/headers';
 
 import { prisma } from '@/lib/prisma-client';
 
+import { TProductStatus } from '../products/get-products';
+
 export interface ITotalSalesInLast14Days {
   salesDate: string;
   totalValue: number;
+}
+export interface IProductMoreSold {
+  id: string;
+  name: string;
+  price: number;
+  stock: number;
+  totalQuantity: number;
+  status: TProductStatus;
 }
 export interface IDashboardDTO {
   totalRevenue: number;
@@ -16,6 +26,7 @@ export interface IDashboardDTO {
   totalInStock: number;
   totalProducts: number;
   totalSalesInLast14Days: ITotalSalesInLast14Days[];
+  theProductsMoreSold: IProductMoreSold[];
 }
 
 export async function getDashboard() {
@@ -27,6 +38,17 @@ export async function getDashboard() {
   const today = dayjs().tz('America/Sao_Paulo').endOf('day');
   const todayLess = today.subtract(13, 'day').startOf('day');
 
+  const theProductsMoreSoldPromise = prisma.$queryRaw<
+    Omit<IProductMoreSold, 'status'>[]
+  >`
+    SELECT "Product"."id", "Product"."name", "Product"."price", "Product"."stock", SUM("SaleProduct"."quantity") as "totalQuantity"
+    FROM "SaleProduct"
+    JOIN "Product" ON "SaleProduct"."productId" = "Product"."id"
+    GROUP BY "Product"."id"
+    HAVING SUM("SaleProduct"."quantity") > 0
+    ORDER BY "totalQuantity" DESC
+    LIMIT 10;
+  `;
   const totalSalesInLast14DaysPromise = prisma.$queryRaw<
     ITotalSalesInLast14Days[]
   >`
@@ -86,6 +108,7 @@ export async function getDashboard() {
     totalInStock,
     totalProducts,
     totalSalesInLast14Days,
+    theProductsMoreSold,
   ] = await Promise.all([
     totalRevenuePromise(),
     todaysRevenuePromise(),
@@ -93,6 +116,7 @@ export async function getDashboard() {
     totalInStockPromise,
     totalProductsPromise,
     totalSalesInLast14DaysPromise,
+    theProductsMoreSoldPromise,
   ]);
 
   return {
@@ -106,9 +130,15 @@ export async function getDashboard() {
       return {
         salesDate: dayjs(item.salesDate)
           .subtract(today.utcOffset(), 'minute')
-          .toDate(),
+          .toDate()
+          .toUTCString(),
         totalValue: Number(item.totalValue),
       };
     }),
+    theProductsMoreSold: theProductsMoreSold.map((item) => ({
+      ...item,
+      price: Number(item.price),
+      status: (item.stock > 0 ? 'IN_STOCK' : 'OUT_OF_STOCK') as TProductStatus,
+    })),
   };
 }
