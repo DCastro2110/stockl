@@ -6,7 +6,7 @@ import { cookies } from 'next/headers';
 import { prisma } from '@/lib/prisma-client';
 
 export interface ITotalSalesInLast14Days {
-  date: string;
+  salesDate: string;
   totalValue: number;
 }
 export interface IDashboardDTO {
@@ -30,12 +30,12 @@ export async function getDashboard() {
   const totalSalesInLast14DaysPromise = prisma.$queryRaw<
     ITotalSalesInLast14Days[]
   >`
-  SELECT DATE_TRUNC('DAY',"Sale"."date"::timestamptz AT TIME ZONE ${userTimezone}) as date, SUM("SaleProduct"."unitPrice" * "SaleProduct"."quantity") as "totalValue"
+  SELECT DATE_TRUNC('DAY',"Sale"."date"::timestamptz AT TIME ZONE ${userTimezone}) as "salesDate", SUM("SaleProduct"."unitPrice" * "SaleProduct"."quantity") as "totalValue"
   FROM "Sale"
   JOIN "SaleProduct" ON "Sale"."id" = "SaleProduct"."saleId"
   WHERE "Sale"."date"::timestamptz AT TIME ZONE ${userTimezone} <= ${today.toDate()} AND "Sale"."date"::timestamptz AT TIME ZONE ${userTimezone} >= ${todayLess.toDate()} 
-  GROUP BY date
-  ORDER BY date;`;
+  GROUP BY "salesDate"
+  ORDER BY "salesDate";`;
 
   const totalRevenuePromise = async () => {
     const allSalesProducts = await prisma.saleProduct.findMany();
@@ -95,17 +95,20 @@ export async function getDashboard() {
     totalSalesInLast14DaysPromise,
   ]);
 
-  console.log(totalSalesInLast14Days);
-
   return {
     totalRevenue,
     todaysRevenue,
     totalSales,
     totalInStock: totalInStock._sum.stock || 0,
     totalProducts,
-    totalSalesInLast14Days: totalSalesInLast14Days.map((item) => ({
-      date: new Date(item.date).toLocaleDateString('pt-BR'),
-      totalValue: Number(item.totalValue),
-    })),
+    totalSalesInLast14Days: totalSalesInLast14Days.map((item) => {
+      console.log(new Date(item.salesDate).getTimezoneOffset());
+      return {
+        salesDate: dayjs(item.salesDate)
+          .subtract(today.utcOffset(), 'minute')
+          .toDate(),
+        totalValue: Number(item.totalValue),
+      };
+    }),
   };
 }

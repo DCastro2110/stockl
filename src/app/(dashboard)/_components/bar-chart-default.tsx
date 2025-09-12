@@ -32,6 +32,7 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export const BarChartDefault = ({ chartData }: IBarChartDefaultProps) => {
+  console.log('chartData', chartData);
   return (
     <Card>
       <CardHeader>
@@ -54,11 +55,11 @@ export const BarChartDefault = ({ chartData }: IBarChartDefaultProps) => {
             >
               <CartesianGrid vertical={false} />
               <XAxis
-                dataKey='date'
+                dataKey='salesDate'
                 tickLine={false}
                 tickMargin={10}
                 axisLine={false}
-                tickFormatter={(value) => value}
+                tickFormatter={(value) => new Date(value).toLocaleDateString()}
               />
               <ChartTooltip
                 cursor={false}
