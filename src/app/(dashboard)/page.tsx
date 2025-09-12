@@ -112,10 +112,7 @@ const Dashboard = async () => {
                   <div className='flex flex-col gap-4'>
                     {theProductsMoreSold.map((product) => (
                       <ProductMoreSold
-                        productName={product.name}
-                        productPrice={product.price}
-                        productStatus={product.status}
-                        totalQuantitySold={product.totalQuantity}
+                        product={product}
                         key={product.id}
                       />
                     ))}
