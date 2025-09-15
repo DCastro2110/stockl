@@ -10,7 +10,10 @@ import {
 import { ScrollArea } from '@/app/_components/ui/scroll-area';
 import { getMoreSoldedProducts } from '@/app/_data-access/dashboard/get-more-products-sold';
 
-import { MoreSoldedProductItem } from './more-solded-product-item';
+import {
+  MoreSoldedProductItem,
+  MoreSoldedProductItemSkeleton,
+} from './more-solded-product-item';
 
 export const MoreSoldedProductsCard = async ({}) => {
   const moreSoldedProducts = await getMoreSoldedProducts();
@@ -40,6 +43,28 @@ export const MoreSoldedProductsCard = async ({}) => {
             </div>
           </ScrollArea>
         )}
+      </CardContent>
+    </Card>
+  );
+};
+
+export const MoreSoldedProductsCardSkeleton = () => {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Produtos mais vendidos</CardTitle>
+        <CardDescription>
+          Produtos mais vendidos de todos os tempos
+        </CardDescription>
+      </CardHeader>
+      <CardContent className='flex min-h-100 items-center justify-center'>
+        <ScrollArea className='h-full max-h-100 w-full'>
+          <div className='flex flex-col gap-4'>
+            <MoreSoldedProductItemSkeleton />
+            <MoreSoldedProductItemSkeleton />
+            <MoreSoldedProductItemSkeleton />
+          </div>
+        </ScrollArea>
       </CardContent>
     </Card>
   );

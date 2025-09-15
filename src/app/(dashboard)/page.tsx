@@ -7,7 +7,10 @@ import {
   HeaderTitle,
 } from '../_components/common/header';
 import { InfoCardSkeleton } from './_components/info-card';
-import { MoreSoldedProductsCard } from './_components/more-solded-products-card';
+import {
+  MoreSoldedProductsCard,
+  MoreSoldedProductsCardSkeleton,
+} from './_components/more-solded-products-card';
 import { TodaysRevenueCard } from './_components/todays-revenue-card';
 import { TotalInStockCard } from './_components/total-in-stock-card';
 import { TotalProductsCard } from './_components/total-products-card';
@@ -47,7 +50,9 @@ const Dashboard = async () => {
         </div>
         <div className='grid grid-cols-3 gap-4'>
           <TotalSalesInLast14DaysCard />
-          <MoreSoldedProductsCard />
+          <Suspense fallback={<MoreSoldedProductsCardSkeleton />}>
+            <MoreSoldedProductsCard />
+          </Suspense>
         </div>
       </div>
     </div>

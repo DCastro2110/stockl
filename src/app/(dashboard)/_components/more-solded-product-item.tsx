@@ -3,6 +3,7 @@ import React from 'react';
 
 import { Badge } from '@/app/_components/ui/badge';
 import { Card, CardContent } from '@/app/_components/ui/card';
+import { Skeleton } from '@/app/_components/ui/skeleton';
 import { IMoreSoldedProductsDTO } from '@/app/_data-access/dashboard/get-more-products-sold';
 import { cn } from '@/lib/utils';
 import { formatCurrency } from '@/utils/formatCurrency';
@@ -37,5 +38,22 @@ export const MoreSoldedProductItem = ({ product }: IProductMoreSoldProps) => {
         </div>
       </CardContent>
     </Card>
+  );
+};
+
+export const MoreSoldedProductItemSkeleton = () => {
+  return (
+    <div className='!w-full'>
+      <div className='flex flex-col gap-6 p-6'>
+        <Skeleton className='h-6 w-24 rounded-full bg-gray-200' />
+        <div className='flex w-full justify-between'>
+          <div className='space-y-1'>
+            <Skeleton className='h-4 w-32 rounded bg-gray-200' />
+            <Skeleton className='h-4 w-20 rounded bg-gray-200' />
+          </div>
+          <Skeleton className='h-4 w-20 rounded bg-gray-200' />
+        </div>
+      </div>
+    </div>
   );
 };
