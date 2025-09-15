@@ -1,3 +1,5 @@
+import { NextRequest } from 'next/server';
+
 import { prisma } from '@/lib/prisma-client';
 
 export type TProductStatus = 'OUT_OF_STOCK' | 'IN_STOCK';
@@ -9,11 +11,16 @@ export interface IProductDTO {
   status: TProductStatus;
 }
 
-export async function getProducts(): Promise<IProductDTO[]> {
+export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams;
+  const page = searchParams.get('page') || '1';
+
   const products = await prisma.product.findMany({
     orderBy: { name: 'asc' },
-    take: 50,
+    take: 25,
+    skip: (Number(page) - 1) * 25,
   });
+
   const formattedProducts: IProductDTO[] = products.map((item) => {
     return {
       id: item.id,
@@ -24,5 +31,9 @@ export async function getProducts(): Promise<IProductDTO[]> {
     };
   });
 
-  return formattedProducts;
+  return Response.json({
+    status: 'success',
+    statusCode: 200,
+    data: formattedProducts,
+  });
 }

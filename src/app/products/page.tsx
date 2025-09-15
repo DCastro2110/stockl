@@ -9,12 +9,12 @@ import {
   HeaderSubtitle,
   HeaderTitle,
 } from '../_components/common/header';
-import { getProductsCached } from '../_data-access/products/get-products';
+import { getProducts } from '../_data-access/products/get-products';
 import { columns } from './_components/columns';
 import { CreateProductDialog } from './_components/create-product-dialog';
 
 const ProductsPage = async () => {
-  const product = await getProductsCached();
+  const product = await getProducts();
 
   return (
     <div className='h-full px-8 py-8'>
