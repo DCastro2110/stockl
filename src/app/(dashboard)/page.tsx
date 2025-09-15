@@ -16,7 +16,10 @@ import { TotalInStockCard } from './_components/total-in-stock-card';
 import { TotalProductsCard } from './_components/total-products-card';
 import { TotalRevenueCard } from './_components/total-revenue-card';
 import { TotalSalesCard } from './_components/total-sales-card';
-import { TotalSalesInLast14DaysCard } from './_components/total-sales-in-last-14-days-card';
+import {
+  TotalSalesInLast14DaysCard,
+  TotalSalesInLast14DaysCardSkeleton,
+} from './_components/total-sales-in-last-14-days-card';
 
 const Dashboard = async () => {
   return (
@@ -49,7 +52,9 @@ const Dashboard = async () => {
           </Suspense>
         </div>
         <div className='grid grid-cols-3 gap-4'>
-          <TotalSalesInLast14DaysCard />
+          <Suspense fallback={<TotalSalesInLast14DaysCardSkeleton />}>
+            <TotalSalesInLast14DaysCard />
+          </Suspense>
           <Suspense fallback={<MoreSoldedProductsCardSkeleton />}>
             <MoreSoldedProductsCard />
           </Suspense>

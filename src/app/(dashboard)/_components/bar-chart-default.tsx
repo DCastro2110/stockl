@@ -3,13 +3,6 @@
 import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts';
 
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/app/_components/ui/card';
-import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
@@ -32,58 +25,49 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export const BarChartDefault = ({
-  chartData,
-  className,
-}: IBarChartDefaultProps) => {
+export const BarChartDefault = ({ chartData }: IBarChartDefaultProps) => {
   return (
-    <Card className={className}>
-      <CardHeader>
-        <CardTitle>Receita</CardTitle>
-        <CardDescription>Últimos 14 dias</CardDescription>
-      </CardHeader>
-      <CardContent className='flex min-h-100 items-center justify-center'>
-        {chartData.length === 0 ? (
-          <div className='flex h-full w-full items-center justify-center'>
-            <p>Não há nenhuma venda nesse período.</p>
-          </div>
-        ) : (
-          <ChartContainer
-            className='min-h-0 w-full'
-            config={chartConfig}
+    <>
+      {chartData.length === 0 ? (
+        <div className='flex h-full w-full items-center justify-center'>
+          <p>Não há nenhuma venda nesse período.</p>
+        </div>
+      ) : (
+        <ChartContainer
+          className='min-h-0 w-full'
+          config={chartConfig}
+        >
+          <BarChart
+            accessibilityLayer
+            data={chartData}
           >
-            <BarChart
-              accessibilityLayer
-              data={chartData}
-            >
-              <CartesianGrid vertical={false} />
-              <XAxis
-                dataKey='salesDate'
-                tickLine={false}
-                tickMargin={10}
-                axisLine={false}
-                tickFormatter={(value) => new Date(value).toLocaleDateString()}
-              />
-              <ChartTooltip
-                cursor={false}
-                content={
-                  <ChartTooltipContent
-                    formatter={(value) => formatCurrency(Number(value))}
-                    labelFormatter={(label) =>
-                      new Date(label).toLocaleDateString()
-                    }
-                  />
-                }
-              />
-              <Bar
-                dataKey='totalValue'
-                fill='var(--color-totalValue)'
-                radius={8}
-              />
-            </BarChart>
-          </ChartContainer>
-        )}
-      </CardContent>
-    </Card>
+            <CartesianGrid vertical={false} />
+            <XAxis
+              dataKey='salesDate'
+              tickLine={false}
+              tickMargin={10}
+              axisLine={false}
+              tickFormatter={(value) => new Date(value).toLocaleDateString()}
+            />
+            <ChartTooltip
+              cursor={false}
+              content={
+                <ChartTooltipContent
+                  formatter={(value) => formatCurrency(Number(value))}
+                  labelFormatter={(label) =>
+                    new Date(label).toLocaleDateString()
+                  }
+                />
+              }
+            />
+            <Bar
+              dataKey='totalValue'
+              fill='var(--color-totalValue)'
+              radius={8}
+            />
+          </BarChart>
+        </ChartContainer>
+      )}
+    </>
   );
 };
