@@ -17,7 +17,7 @@ const ProductsPage = async () => {
   const product = await getProductsCached();
 
   return (
-    <div className='px-8 py-8'>
+    <div className='h-full px-8 py-8'>
       <Header>
         <HeaderLeft>
           <HeaderSubtitle>Produtos</HeaderSubtitle>
