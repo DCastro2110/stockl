@@ -19,20 +19,20 @@ export const MoreSoldedProductsCard = async ({}) => {
   const moreSoldedProducts = await getMoreSoldedProducts();
 
   return (
-    <Card>
+    <Card className='flex h-full'>
       <CardHeader>
         <CardTitle>Produtos mais vendidos</CardTitle>
         <CardDescription>
           Produtos mais vendidos de todos os tempos
         </CardDescription>
       </CardHeader>
-      <CardContent className='flex min-h-100 items-center justify-center'>
+      <CardContent className='flex h-full max-h-full'>
         {moreSoldedProducts.length === 0 ? (
-          <div className='flex h-full w-full items-center justify-center'>
+          <div className='flex w-full items-center justify-center'>
             <p>Não há nenhum produto mais vendido.</p>
           </div>
         ) : (
-          <ScrollArea className='h-full max-h-100 w-full'>
+          <ScrollArea className='h-full max-h-140 w-full'>
             <div className='flex flex-col gap-4'>
               {moreSoldedProducts.map((product) => (
                 <MoreSoldedProductItem
