@@ -1,3 +1,5 @@
+import { Suspense } from 'react';
+
 import {
   Header,
   HeaderLeft,
@@ -24,15 +26,24 @@ const Dashboard = async () => {
       </Header>
       <div className='flex flex-col gap-4'>
         <div className='grid grid-cols-2 gap-4'>
-          <TotalRevenueCard />
-          <TodaysRevenueCard />
-          <InfoCardSkeleton />
+          <Suspense fallback={<InfoCardSkeleton />}>
+            <TotalRevenueCard />
+          </Suspense>
+          <Suspense fallback={<InfoCardSkeleton />}>
+            <TodaysRevenueCard />
+          </Suspense>
         </div>
 
         <div className='grid grid-cols-3 gap-4'>
-          <TotalSalesCard />
-          <TotalInStockCard />
-          <TotalProductsCard />
+          <Suspense fallback={<InfoCardSkeleton />}>
+            <TotalSalesCard />
+          </Suspense>
+          <Suspense fallback={<InfoCardSkeleton />}>
+            <TotalInStockCard />
+          </Suspense>
+          <Suspense fallback={<InfoCardSkeleton />}>
+            <TotalProductsCard />
+          </Suspense>
         </div>
         <div className='grid grid-cols-3 gap-4'>
           <TotalSalesInLast14DaysCard />
