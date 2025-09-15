@@ -4,8 +4,8 @@ export interface ITotalProductsDTO {
   totalProducts: number;
 }
 
-export function getTotalProducts() {
-  const totalProducts = prisma.product.count();
+export async function getTotalProducts() {
+  const totalProducts = await prisma.product.count();
 
   return { totalProducts: Number(totalProducts) };
 }
