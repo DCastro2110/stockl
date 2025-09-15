@@ -4,6 +4,7 @@ import {
   HeaderSubtitle,
   HeaderTitle,
 } from '../_components/common/header';
+import { InfoCardSkeleton } from './_components/info-card';
 import { MoreSoldedProductsCard } from './_components/more-solded-products-card';
 import { TodaysRevenueCard } from './_components/todays-revenue-card';
 import { TotalInStockCard } from './_components/total-in-stock-card';
@@ -25,6 +26,7 @@ const Dashboard = async () => {
         <div className='grid grid-cols-2 gap-4'>
           <TotalRevenueCard />
           <TodaysRevenueCard />
+          <InfoCardSkeleton />
         </div>
 
         <div className='grid grid-cols-3 gap-4'>
