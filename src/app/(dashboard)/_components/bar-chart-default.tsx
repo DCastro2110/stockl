@@ -15,13 +15,13 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/app/_components/ui/chart';
-import { ITotalSalesInLast14Days } from '@/app/_data-access/dashboard/get-dashboard';
+import { ITotalSalesInLast14DaysDTO } from '@/app/_data-access/dashboard/get-total-sales-in-last-14-days';
 import { formatCurrency } from '@/utils/formatCurrency';
 
 export const description = 'A bar chart';
 
 interface IBarChartDefaultProps {
-  chartData: ITotalSalesInLast14Days[];
+  chartData: ITotalSalesInLast14DaysDTO[];
   className?: string;
 }
 
@@ -36,7 +36,6 @@ export const BarChartDefault = ({
   chartData,
   className,
 }: IBarChartDefaultProps) => {
-  console.log('chartData', chartData);
   return (
     <Card className={className}>
       <CardHeader>

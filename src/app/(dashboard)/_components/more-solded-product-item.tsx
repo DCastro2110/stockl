@@ -3,14 +3,14 @@ import React from 'react';
 
 import { Badge } from '@/app/_components/ui/badge';
 import { Card, CardContent } from '@/app/_components/ui/card';
-import { IProductMoreSold } from '@/app/_data-access/dashboard/get-dashboard';
+import { IMoreSoldedProductsDTO } from '@/app/_data-access/dashboard/get-more-products-sold';
 import { cn } from '@/lib/utils';
 import { formatCurrency } from '@/utils/formatCurrency';
 
 interface IProductMoreSoldProps {
-  product: IProductMoreSold;
+  product: IMoreSoldedProductsDTO;
 }
-export const ProductMoreSold = ({ product }: IProductMoreSoldProps) => {
+export const MoreSoldedProductItem = ({ product }: IProductMoreSoldProps) => {
   const status =
     product.status === 'IN_STOCK' ? 'Em estoque' : 'Fora de estoque';
 
