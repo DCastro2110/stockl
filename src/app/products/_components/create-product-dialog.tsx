@@ -1,5 +1,6 @@
 'use client';
 
+import { DialogDescription, DialogTitle } from '@radix-ui/react-dialog';
 import { PlusIcon } from 'lucide-react';
 import React, { useState } from 'react';
 import { toast } from 'sonner';
@@ -43,8 +44,12 @@ export const CreateProductDialog = () => {
       </DialogTrigger>
       <DialogContent className='w-full max-w-[320px]!'>
         <DialogHeader>
-          <h3 className='text-2xl font-semibold'>Cadastrar produto</h3>
-          <span className='text-sm'>Insira as informações abaixo</span>
+          <DialogTitle className='text-2xl font-semibold'>
+            Cadastrar produto
+          </DialogTitle>
+          <DialogDescription className='text-sm'>
+            Insira as informações abaixo
+          </DialogDescription>
         </DialogHeader>
         <UpsertProductForm onSubmit={onSubmit} />
       </DialogContent>
