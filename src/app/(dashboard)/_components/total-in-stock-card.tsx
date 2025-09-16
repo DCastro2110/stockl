@@ -1,4 +1,4 @@
-import { CircleDollarSignIcon } from 'lucide-react';
+import { BoxIcon } from 'lucide-react';
 import React from 'react';
 
 import { getTotalInStock } from '@/app/_data-access/dashboard/get-total-in-stock';
@@ -16,9 +16,9 @@ export const TotalInStockCard = async () => {
   return (
     <InfoCard>
       <InfoCardIcon>
-        <CircleDollarSignIcon />
+        <BoxIcon />
       </InfoCardIcon>
-      <InfoCardTitle>Vendais Totais</InfoCardTitle>
+      <InfoCardTitle>Total em Estoque</InfoCardTitle>
       <InfoCardValue>{totalInStock}</InfoCardValue>
     </InfoCard>
   );
