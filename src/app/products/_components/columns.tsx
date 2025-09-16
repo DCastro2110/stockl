@@ -1,16 +1,17 @@
 'use client';
 
-import { ColumnDef } from '@tanstack/react-table';
+import { ColumnDef, Row, SortingFn } from '@tanstack/react-table';
 import clsx from 'clsx';
-import { CircleIcon } from 'lucide-react';
+import { ArrowUpDown, CircleIcon } from 'lucide-react';
 
 import { Badge } from '@/app/_components/ui/badge';
+import { Button } from '@/app/_components/ui/button';
 import {
   IProductDTO,
   TProductStatus,
 } from '@/app/_data-access/products/get-products';
 
-import {ProductOptionsDropdown} from './options-dropdown';
+import { ProductOptionsDropdown } from './options-dropdown';
 
 function getStatus(status: TProductStatus) {
   switch (status) {
@@ -20,18 +21,69 @@ function getStatus(status: TProductStatus) {
       return 'Fora de estoque';
   }
 }
+
+const sortStatus: SortingFn<IProductDTO> = (
+  rowA: Row<IProductDTO>,
+  rowB: Row<IProductDTO>,
+  columnId: string
+) => {
+  const statusA = rowA.original.status;
+  const statusB = rowB.original.status;
+
+  if (statusA === statusB) {
+    return 0;
+  }
+  if (statusA === 'IN_STOCK' && statusB === 'OUT_OF_STOCK') {
+    return -1;
+  }
+  return 1;
+};
 export const columns: ColumnDef<IProductDTO>[] = [
   {
     accessorKey: 'name',
-    header: 'Nome',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant='ghost'
+          onClick={() =>
+            column.toggleSorting(column.getIsSorted() === 'asc', true)
+          }
+        >
+          Nome
+          <ArrowUpDown className='ml-2 h-4 w-4' />
+        </Button>
+      );
+    },
   },
   {
     accessorKey: 'stock',
-    header: 'Quantidade',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant='ghost'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Quantidade
+          <ArrowUpDown className='ml-2 h-4 w-4' />
+        </Button>
+      );
+    },
   },
   {
     accessorKey: 'price',
-    header: 'Valor unitário',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant='ghost'
+          onClick={() =>
+            column.toggleSorting(column.getIsSorted() === 'asc', true)
+          }
+        >
+          Valor unitário
+          <ArrowUpDown className='ml-2 h-4 w-4' />
+        </Button>
+      );
+    },
     cell: ({ row }) => {
       const { price } = row.original;
       return Intl.NumberFormat('pt-BR', {
@@ -42,7 +94,20 @@ export const columns: ColumnDef<IProductDTO>[] = [
   },
   {
     accessorKey: 'status',
-    header: 'Status',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant='ghost'
+          onClick={() =>
+            column.toggleSorting(column.getIsSorted() === 'asc', true)
+          }
+        >
+          Status
+          <ArrowUpDown className='ml-2 h-4 w-4' />
+        </Button>
+      );
+    },
+    sortingFn: sortStatus,
     cell: ({ row }) => {
       const product = row.original as IProductDTO;
       const bagdeStyle = clsx(
