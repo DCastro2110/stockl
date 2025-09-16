@@ -10,8 +10,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Product {
@@ -25,11 +26,11 @@ model Product {
 }
 
 model Sale {
-  id            String        @id @default(uuid())
-  date          DateTime
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-  SaleProduct   SaleProduct[]
+  id          String        @id @default(uuid())
+  date        DateTime
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  SaleProduct SaleProduct[]
 }
 
 model SaleProduct {
