@@ -9,14 +9,14 @@ import {
   HeaderTitle,
 } from '../_components/common/header';
 import { IComboBoxOptions } from '../_components/ui/combobox';
-import { getProductsCached } from '../_data-access/products/get-products';
-import { getSalesCached } from '../_data-access/sale/get-sales';
+import { getProducts } from '../_data-access/products/get-products';
+import { getSales } from '../_data-access/sale/get-sales';
 import { columns } from './_components/columns';
 import CreateSaleSheet from './_components/create-sale-sheet';
 
 const SalesPage = async () => {
-  const products = await getProductsCached();
-  const sales = await getSalesCached();
+  const products = await getProducts();
+  const sales = await getSales();
   const comboOptions: IComboBoxOptions[] = products.map((item) => ({
     value: item.id,
     label: item.name,

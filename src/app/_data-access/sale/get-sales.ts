@@ -1,5 +1,3 @@
-import { unstable_cache } from 'next/cache';
-
 import { prisma } from '@/lib/prisma-client';
 
 import { IProductDTO } from '../products/get-products';
@@ -21,7 +19,7 @@ export interface ISaleDTO {
   SaleProducts: ISaleProductDTO[];
 }
 
-async function getSales(): Promise<ISaleDTO[]> {
+export async function getSales(): Promise<ISaleDTO[]> {
   const sales = await prisma.sale.findMany({
     include: {
       SaleProduct: {
@@ -62,8 +60,3 @@ async function getSales(): Promise<ISaleDTO[]> {
 
   return formattedSales;
 }
-
-export const getSalesCached = unstable_cache(getSales, [], {
-  revalidate: 10,
-  tags: ['get-all-sales'],
-});
