@@ -12,7 +12,6 @@ export interface IProductDTO {
 export async function getProducts(): Promise<IProductDTO[]> {
   const products = await prisma.product.findMany({
     orderBy: { name: 'asc' },
-    take: 50,
   });
   const formattedProducts: IProductDTO[] = products.map((item) => {
     return {
