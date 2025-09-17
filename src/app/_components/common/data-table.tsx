@@ -33,10 +33,6 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([
     {
-      id: 'status',
-      desc: true,
-    },
-    {
       id: 'name',
       desc: false,
     },

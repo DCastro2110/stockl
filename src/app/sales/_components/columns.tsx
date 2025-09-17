@@ -1,7 +1,9 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
+import { ArrowUpDown } from 'lucide-react';
 
+import { Button } from '@/app/_components/ui/button';
 import { IComboBoxOptions } from '@/app/_components/ui/combobox';
 import { IProductDTO } from '@/app/_data-access/products/get-products';
 import { ISaleDTO } from '@/app/_data-access/sale/get-sales';
@@ -28,11 +30,31 @@ export const columns: ColumnDef<ISaleTableColumns>[] = [
   },
   {
     accessorKey: 'totalQuantity',
-    header: 'Quantidade de Produtos',
+    header: ({ column }) => {
+      return (
+        <Button
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          variant='ghost'
+        >
+          Quantidade
+          <ArrowUpDown className='ml-2 h-4 w-4' />
+        </Button>
+      );
+    },
   },
   {
-    accessorKey: 'totalValue',
-    header: 'Valor Total',
+    accessorKey: 'totalPrice',
+    header: ({ column }) => {
+      return (
+        <Button
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          variant='ghost'
+        >
+          Valor Total
+          <ArrowUpDown className='ml-2 h-4 w-4' />
+        </Button>
+      );
+    },
     cell: ({ row }) => {
       const { totalPrice } = row.original;
       return formatCurrency(totalPrice);
@@ -40,7 +62,17 @@ export const columns: ColumnDef<ISaleTableColumns>[] = [
   },
   {
     accessorKey: 'date',
-    header: 'Data da Venda',
+    header: ({ column }) => {
+      return (
+        <Button
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          variant='ghost'
+        >
+          Data da Venda
+          <ArrowUpDown className='ml-2 h-4 w-4' />
+        </Button>
+      );
+    },
     cell: ({ row }) => {
       const { date } = row.original;
       return new Date(date).toLocaleDateString('pt-BR', {
