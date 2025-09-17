@@ -5,7 +5,7 @@ import {
   HeaderLeft,
   HeaderSubtitle,
   HeaderTitle,
-} from '../_components/common/header';
+} from '../../_components/common/header';
 import { InfoCardSkeleton } from './_components/info-card';
 import {
   MoreSoldedProductsCard,

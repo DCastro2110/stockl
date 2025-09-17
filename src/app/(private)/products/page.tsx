@@ -8,8 +8,8 @@ import {
   HeaderRight,
   HeaderSubtitle,
   HeaderTitle,
-} from '../_components/common/header';
-import { getProducts } from '../_data-access/products/get-products';
+} from '../../_components/common/header';
+import { getProducts } from '../../_data-access/products/get-products';
 import { columns } from './_components/columns';
 import { CreateProductDialog } from './_components/create-product-dialog';
 

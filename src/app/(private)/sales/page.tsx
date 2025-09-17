@@ -1,16 +1,16 @@
 import React from 'react';
 
-import { DataTable } from '../_components/common/data-table';
+import { DataTable } from '../../_components/common/data-table';
 import {
   Header,
   HeaderLeft,
   HeaderRight,
   HeaderSubtitle,
   HeaderTitle,
-} from '../_components/common/header';
-import { IComboBoxOptions } from '../_components/ui/combobox';
-import { getProducts } from '../_data-access/products/get-products';
-import { getSales } from '../_data-access/sale/get-sales';
+} from '../../_components/common/header';
+import { IComboBoxOptions } from '../../_components/ui/combobox';
+import { getProducts } from '../../_data-access/products/get-products';
+import { getSales } from '../../_data-access/sale/get-sales';
 import { columns } from './_components/columns';
 import CreateSaleSheet from './_components/create-sale-sheet';
 
