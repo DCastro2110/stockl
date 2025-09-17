@@ -50,11 +50,14 @@ const Login = () => {
       password: values.password,
       rememberMe: values.rememberMe,
       fetchOptions: {
-        onError: (error) => {
-          console.error('Erro no login:', error);
+        onError: () => {
           toast.error('Erro ao realizar login. Verifique suas credenciais.');
         },
+        onSuccess: () => {
+          toast.success('Login realizado com sucesso!');
+        },
       },
+      callbackURL: `${process.env.BASE_URL}/`,
     });
   };
 
@@ -116,7 +119,7 @@ const Login = () => {
                 control={form.control}
                 name='rememberMe'
                 render={({ field }) => (
-                  <FormItem className='flex flex-row items-start space-y-0 space-x-3'>
+                  <FormItem className='flex flex-row items-center'>
                     <FormControl>
                       <Checkbox
                         className='border-green-300 bg-white checked:border-transparent checked:bg-green-500 focus:ring-2 focus:ring-green-500 focus:ring-offset-0'
@@ -124,11 +127,9 @@ const Login = () => {
                         onCheckedChange={field.onChange}
                       />
                     </FormControl>
-                    <div className='space-y-1 leading-none'>
-                      <FormLabel className='text-sm font-normal'>
-                        Lembre de mim
-                      </FormLabel>
-                    </div>
+                    <FormLabel className='text-sm font-normal'>
+                      Lembre de mim
+                    </FormLabel>
                   </FormItem>
                 )}
               />
