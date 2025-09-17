@@ -45,9 +45,7 @@ export const columns: ColumnDef<IProductDTO>[] = [
       return (
         <Button
           variant='ghost'
-          onClick={() =>
-            column.toggleSorting(column.getIsSorted() === 'asc', true)
-          }
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
           Nome
           <ArrowUpDown className='ml-2 h-4 w-4' />
@@ -75,9 +73,7 @@ export const columns: ColumnDef<IProductDTO>[] = [
       return (
         <Button
           variant='ghost'
-          onClick={() =>
-            column.toggleSorting(column.getIsSorted() === 'asc', true)
-          }
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
           Valor unitário
           <ArrowUpDown className='ml-2 h-4 w-4' />
@@ -98,9 +94,7 @@ export const columns: ColumnDef<IProductDTO>[] = [
       return (
         <Button
           variant='ghost'
-          onClick={() =>
-            column.toggleSorting(column.getIsSorted() === 'asc', true)
-          }
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
           Status
           <ArrowUpDown className='ml-2 h-4 w-4' />
